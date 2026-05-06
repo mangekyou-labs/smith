@@ -1,0 +1,23 @@
+[toolchain]
+anchor_version = "0.31.1"
+package_manager = "npm"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+dive_oracle = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkgNDFxU8UoZ"
+
+[programs.devnet]
+dive_oracle = "CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cargo test --manifest-path programs/dive-oracle/Cargo.toml"
