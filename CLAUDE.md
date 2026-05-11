@@ -16,15 +16,17 @@ Smith is a Solana-native prediction market powered by AI agent oracles on 0G Com
 ## Build Commands
 
 ```bash
-# Next.js
-npm run dev      # Start on localhost:3000
-npm run build    # Production build
+# Next.js — use production mode (Turbopack bug in dev mode, Next.js 16.2.2)
+npm start           # Production server on localhost:3000
+npm run build      # Production build
 
 # Solana Anchor program
-anchor build    # Build smith-oracle + confidential-market
-anchor test     # Run Anchor tests (requires solana-test-validator running)
+anchor build      # Build smith-oracle + confidential-market
+anchor test       # Run Anchor tests (requires solana-test-validator running)
 cargo test --manifest-path programs/smith-oracle/Cargo.toml  # Unit tests (no validator)
 ```
+
+**Prototype mode**: `skipOnChain=true` in `solana-resolve.ts` runs full mock voting — no 0G inference or Solana txs needed. All dispute resolution UI flow works with fixture markets.
 
 ## Skills / Commands
 
@@ -98,17 +100,32 @@ smith-oracle discriminator: `[47, 166, 112, 147, 155, 197, 86, 7]` (from `lib/0g
 
 ### Confidential market program
 
-`programs/confidential-market/` is a separate Anchor workspace program. Not integrated into the Next.js frontend yet. Excluded from Next.js build via `tsconfig.json` exclude pattern.
-
-### Encrypt pre-alpha
-
-`encrypt-pre-alpha/` is a standalone Rust project (separate workspace, `rust-toolchain.toml`). Completely separate from the Next.js build. Excluded via `tsconfig.json` exclude pattern.
-
-### Confidential market program
-
 `programs/confidential-market/` is a separate Anchor workspace program using Encrypt Pre-Alpha FHE SDK. Bet amounts and pool sizes are encrypted — nobody (including the executor) can see individual bet values until decryption at settlement. Not yet integrated into the Next.js frontend. Excluded from Next.js build via `tsconfig.json` exclude pattern.
 
 Build test: `cargo test --manifest-path programs/confidential-market/Cargo.toml`
+
+### Devnet fixture markets
+
+`pages/api/markets.ts` returns hardcoded fixture markets when no real on-chain markets exist on devnet. Fixtures have 64-char hex IDs matching on-chain PDA seed format. The dispute flow (`/dispute`) and market grid (`/market`) work with these fixtures without any on-chain state.
+
+### Frontend pages
+
+| Page | Purpose |
+|---|---|
+| `/market` | Market grid — browse all markets, filter by category, place bets via `PlaceBetModal` |
+| `/dispute?marketId=...` | Dispute resolution flow — committee simulation, commit/reveal animation, payout table |
+| `/agents` | AI agent registry and reputation scores |
+| `/home` | Landing page |
+
+`PlaceBetModal` (`components/solana/PlaceBetModal.tsx`) handles bet placement. Uses `usePlaceBet` from `lib/solana/useTransactions.ts` which calls the Anchor `place_bet` instruction via wallet adapter. The modal requires the user to have a funded SPL token account for the mint.
+
+### Dispute resolution UI flow
+
+1. User opens `/dispute?marketId=` — sees current proposed outcome and dispute tracker
+2. Click "Dispute & Submit Bond" → Round 1 committee simulation via `POST /api/commands/solana-resolve` with `skipOnChain=true`
+3. If no consensus → "Start Round 2" button → same endpoint with `round=2`
+4. If consensus reached → step 7 shows "Simulated Bettor Payout" table (pari-mutuel formula) and "Claim Payout" button
+5. Claim triggers `useClaimPayout` hook — calls `buildClaimPayoutIx` and sends via wallet adapter
 
 ## Known Issues (P1-P2)
 
@@ -128,4 +145,5 @@ INTERNAL_API_KEY=...             # API auth for bridge routes
 NEXT_PUBLIC_SMITH_ORACLE_PROGRAM_ID=CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx
 NEXT_PUBLIC_SOLANA_CLUSTER=devnet
 SOLANA_RPC_URL=https://api.devnet.solana.com
+NEXT_PUBLIC_DEVNET_USDC_MINT=44oePbFbUHk3vhjb9mtq9P2xKfhvA5wfVtMVXuUoayVe  # Devnet USDC (placeholder)
 ```
