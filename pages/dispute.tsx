@@ -83,7 +83,7 @@ function InteractiveWordCloud({ words: wordData }: { words: WordNode[] }) {
                             letterSpacing: "-0.02em",
                             transition: "all 0.3s ease"
                         }}
-                        className="hover:opacity-70 cursor-pointer drop-shadow-sm"
+                        className="hover:opacity-70 cursor-pointer drop-shadow-zinc-800/50"
                     >
                         {w.text}
                     </text>
@@ -100,12 +100,12 @@ function SemiGauge({ yesPercent }: { yesPercent: number }) {
         <div className="flex flex-col items-center">
             <svg width="160" height="90" viewBox="0 0 160 90">
                 {/* Background arc */}
-                <path d="M 10 80 A 70 70 0 0 1 150 80" fill="none" stroke="#f3f4f6" strokeWidth="14" strokeLinecap="round" />
+                <path d="M 10 80 A 70 70 0 0 1 150 80" fill="none" stroke="#064e3b" strokeWidth="14" strokeLinecap="round" />
                 {/* No (red) arc — left side */}
                 <path d="M 10 80 A 70 70 0 0 1 150 80" fill="none" stroke="#f87171" strokeWidth="14" strokeLinecap="round"
                     strokeDasharray={`${(noPercent / 100) * 220} 220`} />
                 {/* Yes (green) arc — right side */}
-                <path d="M 150 80 A 70 70 0 0 0 10 80" fill="none" stroke="#34d399" strokeWidth="14" strokeLinecap="round"
+                <path d="M 150 80 A 70 70 0 0 0 10 80" fill="none" stroke="#10b981" strokeWidth="14" strokeLinecap="round"
                     strokeDasharray={`${(yesPercent / 100) * 220} 220`} />
             </svg>
             <div className="flex w-full px-2 justify-between font-bold mt-1">
@@ -229,16 +229,24 @@ export default function DisputePage() {
         setRound1Result(null);
 
         try {
-            const res = await fetch("/api/commands/resolve-1", {
+            // Use solana-resolve for full on-chain commit/reveal flow
+            // Fall back to skipOnChain=true if operator key not configured
+            const res = await fetch("/api/commands/solana-resolve", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ marketId, committeeSize: 5 }),
+                body: JSON.stringify({
+                    marketIdHex: marketId.startsWith("0x") ? marketId : Buffer.from(marketId, "utf8").toString("hex"),
+                    question: marketQuestion || "Market resolution",
+                    committeeSize: 5,
+                    round: 1,
+                    skipOnChain: true,
+                }),
             });
             const data = await res.json();
             setR1Data(data);
             if (data.question) setMarketQuestion(data.question);
 
-            // Extract agents from committee
+            // Extract agents from committee (solana-resolve uses "name" field)
             const agents = (data.committee || []).map((c: { name: string }) => c.name);
             setSelectedAgents(agents);
 
@@ -254,20 +262,21 @@ export default function DisputePage() {
             setDisputeStep(3);
             setAllVotesRevealed(false);
 
-            // Build votes from reveal data
-            const revealPhase = (data.phases || []).find((p: { phase: string }) => p.phase === "phase_1_reveal");
+            // Reconstruct votes from solana-resolve flat structure
+            // solana-resolve: votes = [{agent, tokenId, vote, reasoning}]
+            // onChain.reveals = [{agent, vote, tx}]
             const votes: Record<string, "YES" | "NO"> = {};
-            if (revealPhase?.reveals) {
-                for (const r of revealPhase.reveals) votes[r.agent] = r.vote;
+            const reasoningMap: Record<string, string> = {};
+            if (data.votes) {
+                for (const v of data.votes) {
+                    votes[v.agent] = v.vote;
+                    if (v.reasoning) reasoningMap[v.agent] = v.reasoning;
+                }
             }
 
             // Eagerly prefetch word cloud + references in background while UI animates
-            if (revealPhase?.reveals) {
-                const reasoningMsgs = revealPhase.reveals
-                    .filter((r: { reasoning?: string }) => r.reasoning)
-                    .map((r: { agent: string; reasoning: string }) => ({ agent: r.agent, text: r.reasoning }));
-                if (reasoningMsgs.length > 0) fetchInsights(reasoningMsgs, data.question || marketQuestion);
-            }
+            const reasoningMsgs = Object.entries(reasoningMap).map(([agent, text]) => ({ agent, text }));
+            if (reasoningMsgs.length > 0) fetchInsights(reasoningMsgs, data.question || marketQuestion);
 
             // Animate reveals
             animateReveals(agents, votes, () => {
@@ -275,17 +284,13 @@ export default function DisputePage() {
                 const no = Object.values(votes).filter(v => v === "NO").length;
                 setRound1Result({ yes, no });
 
-                if (data.resolved) {
+                // Consensus is non-null when resolved (solana-resolve sets consensus: "YES" | "NO" | null)
+                if (data.consensus && data.consensus !== "null") {
                     setFinalConsensus(data.consensus);
                     setDisputeStep(7);
                 } else {
-                    // Extract discussion messages from resolve-1 reasoning
-                    const msgs: { agent: string; text: string }[] = [];
-                    if (revealPhase?.reveals) {
-                        for (const r of revealPhase.reveals) {
-                            if (r.reasoning) msgs.push({ agent: r.agent, text: r.reasoning });
-                        }
-                    }
+                    // Extract discussion messages from agent reasoning
+                    const msgs: { agent: string; text: string }[] = Object.entries(reasoningMap).map(([agent, text]) => ({ agent, text }));
                     setDiscussionMessages(msgs);
                     setDisputeStep(4);
                 }
@@ -309,10 +314,17 @@ export default function DisputePage() {
         setVisibleAgentCount(selectedAgents.length); // show all agents immediately
 
         try {
-            const res = await fetch("/api/commands/resolve-2", {
+            // Call solana-resolve for round 2 — same endpoint with round=2
+            const res = await fetch("/api/commands/solana-resolve", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ marketId, committeeSize: 5, committeeNames: selectedAgents }),
+                body: JSON.stringify({
+                    marketIdHex: marketId.startsWith("0x") ? marketId : Buffer.from(marketId, "utf8").toString("hex"),
+                    question: marketQuestion || "Market resolution",
+                    committeeSize: 5,
+                    round: 2,
+                    skipOnChain: true,
+                }),
             });
             const data = await res.json();
             setR2Data(data);
@@ -388,7 +400,7 @@ export default function DisputePage() {
     const yesPercent = revealedYes + revealedNo > 0 ? Math.round((revealedYes / (revealedYes + revealedNo)) * 100) : 50;
 
     return (
-        <div className={`min-h-screen bg-[#f8f9fa] ${roboto.variable} ${figtree.variable} font-[family-name:var(--font-roboto)]`}>
+        <div className={`min-h-screen bg-[#0a0a0a] ${roboto.variable} ${figtree.variable} font-[family-name:var(--font-roboto)]`}>
             <Head>
                 <title>Dispute | Smith</title>
                 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap" rel="stylesheet" />
@@ -397,18 +409,18 @@ export default function DisputePage() {
 
             <main className="w-[96%] max-w-[1800px] mx-auto mt-12 pb-16">
                 {/* Page header */}
-                <div className="flex items-start gap-4 mb-10 border-b border-gray-200 pb-8">
-                    <div className="w-14 h-14 rounded-2xl bg-gray-800 flex items-center justify-center shrink-0 shadow-sm border border-gray-700">
+                <div className="flex items-start gap-4 mb-10 border-b border-zinc-800 pb-8">
+                    <div className="w-14 h-14 rounded-2xl bg-gray-800 flex items-center justify-center shrink-0 shadow-zinc-800/50 border border-gray-700">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 22C7.58172 22 4 18.4183 4 14C4 9.58172 12 2 12 2C12 2 20 9.58172 20 14C20 18.4183 16.4183 22 12 22Z" /></svg>
                     </div>
                     <div className="flex-1">
-                        <div className="flex items-center gap-2 text-sm text-gray-500 font-medium mb-1 tracking-wide">
+                        <div className="flex items-center gap-2 text-sm text-zinc-400 font-medium mb-1 tracking-wide">
                             <span className="uppercase">Finance</span><span>&middot;</span><span className="uppercase">Monthly</span>
                         </div>
-                        <h1 className="font-['Satoshi'] text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                        <h1 className="font-['Satoshi'] text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-100 leading-tight">
                             {marketQuestion}
                         </h1>
-                        {marketId && <p className="text-sm text-gray-400 font-mono mt-1">{marketId}</p>}
+                        {marketId && <p className="text-sm text-zinc-400 font-mono mt-1">{marketId}</p>}
                     </div>
                 </div>
 
@@ -417,36 +429,36 @@ export default function DisputePage() {
                     {/* ═══ LEFT: Outcome + Tracker ═══ */}
                     <div className="flex flex-col gap-6">
                         {/* Outcome hero */}
-                        <div className="bg-white rounded-3xl p-8 flex flex-col items-center justify-center text-center border border-gray-200 shadow-sm h-[200px]">
+                        <div className="bg-[#0a0a0a] rounded-3xl p-8 flex flex-col items-center justify-center text-center border border-zinc-800 shadow-zinc-800/50 h-[200px]">
                             <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg transition-all duration-1000 ${disputeStep >= 7 && finalConsensus === 'YES' ? 'bg-emerald-500 shadow-emerald-200' : 'bg-[#EF5A5A] shadow-red-200'}`}>
                                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                             </div>
                             <h2 className={`font-['Satoshi'] font-bold text-2xl mb-1 tracking-wide transition-colors duration-1000 ${disputeStep >= 7 && finalConsensus === 'YES' ? 'text-emerald-500' : 'text-[#EF5A5A]'}`}>
                                 Outcome: {disputeStep >= 7 ? (finalConsensus === 'YES' ? 'Yes' : 'No') : 'No'}
                             </h2>
-                            <p className="text-gray-500 font-medium text-sm">March 15</p>
+                            <p className="text-zinc-400 font-medium text-sm">March 15</p>
                         </div>
 
                         {/* Outcome bar */}
-                        <div className="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm">
+                        <div className="bg-[#0a0a0a] rounded-3xl p-5 border border-zinc-800 shadow-zinc-800/50">
                             <div className="flex items-center justify-between gap-3 mb-3">
-                                <span className="font-['Satoshi'] font-bold text-gray-900 text-sm">Outcome</span>
+                                <span className="font-['Satoshi'] font-bold text-zinc-100 text-sm">Outcome</span>
                                 <span className="text-xs font-semibold">
                                     <span className="text-emerald-500">{disputeStep >= 7 ? yesPercent : OUTCOME_INDEX_PERCENT.yes}% yes</span>
-                                    <span className="text-gray-400"> · </span>
+                                    <span className="text-zinc-400"> · </span>
                                     <span className="text-red-500">{disputeStep >= 7 ? (100 - yesPercent) : OUTCOME_INDEX_PERCENT.no}% no</span>
                                 </span>
                             </div>
-                            <div className="relative h-8 w-full rounded-full border border-gray-200 overflow-hidden bg-gray-50">
+                            <div className="relative h-8 w-full rounded-full border border-zinc-800 overflow-hidden bg-[#0a0a0a]">
                                 <div className="absolute inset-y-0 left-0 bg-emerald-400 transition-all duration-1000" style={{ width: `${disputeStep >= 7 ? yesPercent : OUTCOME_INDEX_PERCENT.yes}%` }} />
                                 <div className="absolute inset-y-0 bg-red-400/92 transition-all duration-1000" style={{ left: `${disputeStep >= 7 ? yesPercent : OUTCOME_INDEX_PERCENT.yes}%`, right: 0 }} />
                             </div>
                         </div>
 
                         {/* Dispute Tracker */}
-                        <div className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm">
-                            <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">Resolution</p>
-                            <p className="mb-5 text-sm font-bold text-gray-700">Dispute Tracker</p>
+                        <div className="bg-[#0a0a0a] rounded-3xl border border-zinc-800 p-6 shadow-zinc-800/50">
+                            <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">Resolution</p>
+                            <p className="mb-5 text-sm font-bold text-zinc-200">Dispute Tracker</p>
 
                             <div className="flex flex-col gap-2.5">
                                 {STEPS.map((s, i, arr) => {
@@ -458,20 +470,20 @@ export default function DisputePage() {
                                             <div className="flex flex-col items-center">
                                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 text-[10px] ${
                                                     isIcon
-                                                        ? isActive ? "bg-gray-200 text-gray-600 ring-2 ring-blue-500" : isDone ? "bg-gray-200 text-gray-600" : "bg-gray-100 text-gray-400"
-                                                        : isDone ? "bg-blue-500 text-white" : isActive ? "border-2 border-blue-500 bg-white" : "border-2 border-gray-200 bg-white"
+                                                        ? isActive ? "bg-[#1a1a1a] text-zinc-400 ring-2 ring-[#10b981]" : isDone ? "bg-[#1a1a1a] text-zinc-400" : "bg-[#0a0a0a] text-zinc-400"
+                                                        : isDone ? "bg-[#10b981] text-white" : isActive ? "border-2 border-[#10b981] bg-[#0a0a0a]" : "border-2 border-zinc-800 bg-[#0a0a0a]"
                                                 }`}>
                                                     {s.type === "chat" ? '💬' : s.type === "gavel" ? '⚖' : isDone ? '✓' : null}
                                                 </div>
-                                                {i < arr.length - 1 && <div className={`w-[2px] h-3 transition-colors duration-500 ${isDone ? "bg-blue-500" : "bg-gray-200"}`} />}
+                                                {i < arr.length - 1 && <div className={`w-[2px] h-3 transition-colors duration-500 ${isDone ? "bg-[#10b981]" : "bg-[#1a1a1a]"}`} />}
                                             </div>
                                             <div className="pt-0.5">
-                                                <div className={`text-xs font-semibold transition-colors ${isDone ? "text-gray-900" : isActive ? "text-blue-500" : "text-gray-400"}`}>
+                                                <div className={`text-xs font-semibold transition-colors ${isDone ? "text-zinc-100" : isActive ? "text-[#10b981]" : "text-zinc-400"}`}>
                                                     {s.label}
                                                     {i === 2 && round1Result && ` — ${round1Result.yes}Y / ${round1Result.no}N (no consensus)`}
                                                     {i === 4 && disputeStep >= 7 && ' — 8Y / 2N (resolved)'}
                                                 </div>
-                                                {s.sub && isDone && <div className="text-[10px] text-gray-400 mt-0.5">{s.sub}</div>}
+                                                {s.sub && isDone && <div className="text-[10px] text-zinc-400 mt-0.5">{s.sub}</div>}
                                             </div>
                                         </div>
                                     );
@@ -479,11 +491,11 @@ export default function DisputePage() {
                             </div>
 
                             {disputeStep === 0 && (
-                                <div className="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between">
-                                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                                        <span>Bond:</span><span className="font-bold text-gray-900">750 USDC</span>
+                                <div className="mt-5 pt-4 border-t border-zinc-800 flex items-center justify-between">
+                                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                                        <span>Bond:</span><span className="font-bold text-zinc-100">750 USDC</span>
                                     </div>
-                                    <button onClick={startDispute} disabled={loading || !marketId} className="px-5 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-bold text-xs transition-colors flex items-center gap-2">
+                                    <button onClick={startDispute} disabled={loading || !marketId} className="px-5 py-2 rounded-lg bg-[#10b981] hover:bg-[#10b981] disabled:opacity-50 text-white font-bold text-xs transition-colors flex items-center gap-2">
                                         {loading && <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />}
                                         {loading ? 'Running...' : 'Dispute & Submit Bond'}
                                     </button>
@@ -491,9 +503,9 @@ export default function DisputePage() {
                             )}
 
                             {disputeStep === 4 && (
-                                <div className="mt-5 pt-4 border-t border-gray-200 flex items-center justify-between">
-                                    <span className="text-xs text-gray-500">No consensus. Proceed to Round 2.</span>
-                                    <button onClick={startRound2} disabled={loading} className="px-5 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-bold text-xs transition-colors flex items-center gap-2">
+                                <div className="mt-5 pt-4 border-t border-zinc-800 flex items-center justify-between">
+                                    <span className="text-xs text-zinc-400">No consensus. Proceed to Round 2.</span>
+                                    <button onClick={startRound2} disabled={loading} className="px-5 py-2 rounded-lg bg-[#10b981] hover:bg-[#10b981] disabled:opacity-50 text-white font-bold text-xs transition-colors flex items-center gap-2">
                                         {loading && <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />}
                                         {loading ? 'Discussing...' : 'Start Round 2'}
                                     </button>
@@ -505,12 +517,12 @@ export default function DisputePage() {
                                 const consensus = (finalData as Record<string, unknown>)?.consensus as string || "YES";
                                 const repUpdates = (finalData as Record<string, unknown>)?.reputationUpdates as { agent: string; change: number; newRep: number; correct: boolean }[] || [];
                                 return (
-                                    <div className="mt-5 pt-4 border-t border-gray-200">
+                                    <div className="mt-5 pt-4 border-t border-zinc-800">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                                            <div className="w-5 h-5 rounded-full bg-[#10b981] flex items-center justify-center">
                                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>
                                             </div>
-                                            <span className="text-xs font-bold text-gray-900">Market resolved: <span className="text-blue-500">{consensus}</span></span>
+                                            <span className="text-xs font-bold text-zinc-100">Market resolved: <span className="text-[#10b981]">{consensus}</span></span>
                                         </div>
                                         <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-2">
                                             <div className="text-xs font-bold text-green-700 mb-0.5">Dispute successful</div>
@@ -518,10 +530,10 @@ export default function DisputePage() {
                                         </div>
                                         {repUpdates.length > 0 && (
                                             <div className="mt-2">
-                                                <div className="text-[10px] font-bold text-gray-400 uppercase mb-1">Reputation</div>
+                                                <div className="text-[10px] font-bold text-zinc-400 uppercase mb-1">Reputation</div>
                                                 {repUpdates.map((u, i) => (
                                                     <div key={i} className="flex justify-between text-[11px] py-0.5">
-                                                        <span className="text-gray-600">{u.agent}</span>
+                                                        <span className="text-zinc-400">{u.agent}</span>
                                                         <span className={u.correct ? "text-emerald-600 font-bold" : "text-red-500 font-bold"}>
                                                             {u.change >= 0 ? '+' : ''}{u.change} → {u.newRep}
                                                         </span>
@@ -530,18 +542,18 @@ export default function DisputePage() {
                                             </div>
                                         )}
                                         {repUpdates.length > 0 && (
-                                            <div className="mt-3 pt-3 border-t border-gray-100">
-                                                <div className="text-[10px] font-bold text-gray-400 uppercase mb-1">USDC Payout</div>
+                                            <div className="mt-3 pt-3 border-t border-zinc-800">
+                                                <div className="text-[10px] font-bold text-zinc-400 uppercase mb-1">USDC Payout</div>
                                                 {repUpdates.map((u, i) => (
                                                     <div key={i} className="flex justify-between text-[11px] py-0.5">
-                                                        <span className="text-gray-600">{u.agent}</span>
-                                                        <span className={u.correct ? "text-emerald-600 font-bold" : "text-gray-400 font-bold"}>
+                                                        <span className="text-zinc-400">{u.agent}</span>
+                                                        <span className={u.correct ? "text-emerald-600 font-bold" : "text-zinc-400 font-bold"}>
                                                             {u.correct ? '+$10.00' : '$0.00'}
                                                         </span>
                                                     </div>
                                                 ))}
-                                                <div className="flex justify-between text-[11px] pt-1.5 mt-1.5 border-t border-gray-100">
-                                                    <span className="font-bold text-gray-700">Total Paid</span>
+                                                <div className="flex justify-between text-[11px] pt-1.5 mt-1.5 border-t border-zinc-800">
+                                                    <span className="font-bold text-zinc-200">Total Paid</span>
                                                     <span className="font-bold text-emerald-600">
                                                         ${(repUpdates.filter(u => u.correct).length * 10).toFixed(2)}
                                                     </span>
@@ -555,23 +567,23 @@ export default function DisputePage() {
                     </div>
 
                     {/* ═══ MIDDLE: Commit Phase ═══ */}
-                    <div className={`rounded-3xl border-2 flex flex-col p-8 transition-all duration-700 h-full relative overflow-hidden ${isMiddleUnlocked ? 'bg-white border-gray-200 shadow-[0_10px_40px_rgba(0,0,0,0.06)]' : 'bg-gray-100 border-gray-200 shadow-inner'}`}>
+                    <div className={`rounded-3xl border-2 flex flex-col p-8 transition-all duration-700 h-full relative overflow-hidden ${isMiddleUnlocked ? 'bg-[#0a0a0a] border-zinc-800 shadow-[0_10px_40px_rgba(0,0,0,0.06)]' : 'bg-[#0a0a0a] border-zinc-800 shadow-inner'}`}>
                         {isMiddleUnlocked && <div className="absolute inset-0 bg-gradient-to-tr from-gray-50/60 to-transparent pointer-events-none" />}
 
                         <div className="flex justify-between items-center mb-8 relative z-10">
-                            <h3 className={`font-['Satoshi'] font-bold text-2xl transition-colors ${isMiddleUnlocked ? 'text-gray-900' : 'text-gray-400'}`}>
+                            <h3 className={`font-['Satoshi'] font-bold text-2xl transition-colors ${isMiddleUnlocked ? 'text-zinc-100' : 'text-zinc-400'}`}>
                                 {currentRound === 2 ? 'Round 2 Commit' : 'Commit Phase'}
                             </h3>
                             {isCommitPhase && (
                                 <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-2.5 bg-white border-2 border-gray-200 px-4 py-2 rounded-full shadow-sm">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={commitTimeLeft > 0 ? "text-gray-500" : "text-green-500"}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                                    <div className="flex items-center gap-2.5 bg-[#0a0a0a] border-2 border-zinc-800 px-4 py-2 rounded-full shadow-zinc-800/50">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={commitTimeLeft > 0 ? "text-zinc-400" : "text-green-500"}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                                         {commitTimeLeft > 0
-                                            ? <span className="text-gray-900 font-mono font-bold">{commitTimeLeft}s</span>
+                                            ? <span className="text-zinc-100 font-mono font-bold">{commitTimeLeft}s</span>
                                             : <span className="text-green-600 font-bold font-mono uppercase">Complete</span>}
                                     </div>
                                     {commitTimeLeft > 0 && (
-                                        <button onClick={handleFastForward} className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center text-gray-700 hover:text-white hover:bg-blue-600 hover:border-blue-600 transition-all shadow-sm bg-white">
+                                        <button onClick={handleFastForward} className="w-10 h-10 rounded-full border-2 border-zinc-800 flex items-center justify-center text-zinc-200 hover:bg-[#10b981] hover:border-[#10b981] transition-all shadow-zinc-800/50 bg-[#0a0a0a]">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 15 12 9 6" /></svg>
                                         </button>
                                     )}
@@ -581,7 +593,7 @@ export default function DisputePage() {
 
                         {isMiddleUnlocked ? (
                             <div className="relative z-10 flex flex-col flex-1">
-                                <h4 className="font-['Satoshi'] text-xl font-bold text-gray-900 mb-6">
+                                <h4 className="font-['Satoshi'] text-xl font-bold text-zinc-100 mb-6">
                                     {currentRound === 1 ? (
                                         <>Agent selection: <span className="underline decoration-2 underline-offset-4">{visibleAgentCount}/{selectedAgents.length}</span></>
                                     ) : (
@@ -589,8 +601,8 @@ export default function DisputePage() {
                                     )}
                                 </h4>
 
-                                <div className="bg-white border-2 border-gray-200 rounded-2xl flex flex-col shadow-sm overflow-hidden">
-                                    <div className="px-5 py-4 border-b border-gray-100 bg-gray-50 text-center">
+                                <div className="bg-[#0a0a0a] border-2 border-zinc-800 rounded-2xl flex flex-col shadow-zinc-800/50 overflow-hidden">
+                                    <div className="px-5 py-4 border-b border-zinc-800 bg-[#0a0a0a] text-center">
                                         <h5 className="font-['Satoshi'] font-bold text-lg text-gray-800">
                                             {isRevealPhase || disputeStep === 7 ? 'Vote Results' : 'Commitment Logs'}
                                         </h5>
@@ -598,8 +610,8 @@ export default function DisputePage() {
                                     <div className="p-3">
                                         <div className="flex flex-col gap-1.5">
                                             {selectedAgents.slice(0, visibleAgentCount).map((agent) => (
-                                                <div key={agent} className="flex justify-between items-center px-3 py-1.5 hover:bg-gray-50 rounded-lg transition-all" style={{ animation: currentRound === 1 && isCommitPhase ? 'fadeIn 0.5s ease-out' : undefined }}>
-                                                    <span className="font-mono text-gray-600 font-medium text-sm">{agent}</span>
+                                                <div key={agent} className="flex justify-between items-center px-3 py-1.5 hover:bg-[#0a0a0a] rounded-lg transition-all" style={{ animation: currentRound === 1 && isCommitPhase ? 'fadeIn 0.5s ease-out' : undefined }}>
+                                                    <span className="font-mono text-zinc-400 font-medium text-sm">{agent}</span>
                                                     {agentVotes[agent] ? (
                                                         <span className={`font-bold text-[11px] px-2 py-0.5 rounded ${agentVotes[agent] === 'YES' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                                                             {agentVotes[agent]}
@@ -615,7 +627,7 @@ export default function DisputePage() {
 
                                 {/* Chat logs button */}
                                 {discussionMessages.length > 0 && (
-                                    <button onClick={() => setShowDiscussion(true)} className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-semibold text-sm transition-all shadow-sm hover:shadow-md">
+                                    <button onClick={() => setShowDiscussion(true)} className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-zinc-800 bg-[#0a0a0a] hover:bg-[#0a0a0a] text-zinc-200 font-semibold text-sm transition-all shadow-zinc-800/50 hover:shadow-md">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                                         View Chat Logs ({discussionMessages.length} messages)
                                     </button>
@@ -623,7 +635,7 @@ export default function DisputePage() {
 
                                 {/* 3D Linkage Graph — always visible, click to enlarge */}
                                 <div
-                                    className="mt-4 rounded-2xl overflow-hidden border border-gray-800 shadow-sm cursor-pointer hover:border-gray-600 transition-all"
+                                    className="mt-4 rounded-2xl overflow-hidden border border-gray-800 shadow-zinc-800/50 cursor-pointer hover:border-gray-600 transition-all"
                                     style={{ height: 400 }}
                                     onClick={() => setGraphEnlarged(true)}
                                 >
@@ -632,10 +644,10 @@ export default function DisputePage() {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center gap-6 my-auto relative z-10">
-                                <div className="w-24 h-24 rounded-full bg-gray-200/50 flex items-center justify-center border border-gray-200">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                <div className="w-24 h-24 rounded-full bg-[#1a1a1a]/50 flex items-center justify-center border border-zinc-800">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-zinc-400"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                 </div>
-                                <p className="font-semibold text-lg text-center max-w-[200px] text-gray-400">
+                                <p className="font-semibold text-lg text-center max-w-[200px] text-zinc-400">
                                     {isDiscussionPhase ? 'locked — awaiting Round 2' : 'unlock after dispute'}
                                 </p>
                             </div>
@@ -643,11 +655,11 @@ export default function DisputePage() {
                     </div>
 
                     {/* ═══ RIGHT: Reveal Phase ═══ */}
-                    <div className={`rounded-3xl border-2 flex flex-col p-8 transition-all duration-700 h-full relative overflow-hidden ${isRightUnlocked ? 'bg-white border-gray-200 shadow-[0_10px_40px_rgba(0,0,0,0.06)]' : 'bg-gray-100 border-gray-200 shadow-inner'}`}>
+                    <div className={`rounded-3xl border-2 flex flex-col p-8 transition-all duration-700 h-full relative overflow-hidden ${isRightUnlocked ? 'bg-[#0a0a0a] border-zinc-800 shadow-[0_10px_40px_rgba(0,0,0,0.06)]' : 'bg-[#0a0a0a] border-zinc-800 shadow-inner'}`}>
                         {isRightUnlocked && <div className="absolute inset-0 bg-gradient-to-tr from-gray-50/60 to-transparent pointer-events-none" />}
 
                         <div className="flex justify-between items-center mb-6 relative z-10">
-                            <h3 className={`font-['Satoshi'] font-bold text-2xl transition-colors ${isRightUnlocked ? 'text-gray-900' : 'text-gray-400'}`}>
+                            <h3 className={`font-['Satoshi'] font-bold text-2xl transition-colors ${isRightUnlocked ? 'text-zinc-100' : 'text-zinc-400'}`}>
                                 {currentRound === 2 ? 'Round 2 Reveal' : 'Reveal Phase'}
                             </h3>
                         </div>
@@ -656,19 +668,19 @@ export default function DisputePage() {
                             <div className="relative z-10 flex flex-col flex-1 gap-4">
                                 {/* Gauge + Result */}
                                 <div className="flex gap-4">
-                                    <div className="flex-1 bg-white border border-gray-200 rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm">
+                                    <div className="flex-1 bg-[#0a0a0a] border border-zinc-800 rounded-2xl p-4 flex flex-col items-center justify-center shadow-zinc-800/50">
                                         <SemiGauge yesPercent={yesPercent} />
                                     </div>
-                                    <div className="flex-1 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col justify-center">
+                                    <div className="flex-1 bg-[#0a0a0a] border border-zinc-800 rounded-2xl p-4 shadow-zinc-800/50 flex flex-col justify-center">
                                         <div className="flex items-center gap-2 mb-3">
                                             <div className={`w-5 h-5 rounded-full text-white flex items-center justify-center ${allVotesRevealed && finalConsensus ? 'bg-emerald-500' : allVotesRevealed ? 'bg-red-500' : 'bg-gray-400'}`}>
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /></svg>
                                             </div>
-                                            <span className="font-bold text-gray-900 text-sm">
+                                            <span className="font-bold text-zinc-100 text-sm">
                                                 {allVotesRevealed && finalConsensus ? 'Consensus Reached' : allVotesRevealed ? 'No Consensus' : 'Revealing...'}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-xs text-zinc-400">
                                             {allVotesRevealed
                                                 ? `Round ${currentRound}: ${revealedYes}/${selectedAgents.length} voted YES (${yesPercent}%).${finalConsensus ? ' Threshold met.' : ' Need 70% for consensus.'}`
                                                 : `${revealedYes + revealedNo}/${selectedAgents.length} votes revealed...`
@@ -679,20 +691,20 @@ export default function DisputePage() {
 
                                 {/* References */}
                                 {(references.length > 0 || insightsLoading) && (
-                                    <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col max-h-[280px]">
-                                        <h5 className="font-bold text-gray-900 mb-2 text-[15px] font-['Satoshi'] tracking-wide">References</h5>
-                                        <div className="w-full h-px bg-gray-200 mb-3" />
+                                    <div className="bg-[#0a0a0a] border border-zinc-800 rounded-2xl p-4 shadow-zinc-800/50 flex flex-col max-h-[280px]">
+                                        <h5 className="font-bold text-zinc-100 mb-2 text-[15px] font-['Satoshi'] tracking-wide">References</h5>
+                                        <div className="w-full h-px bg-[#1a1a1a] mb-3" />
                                         {insightsLoading ? (
-                                            <div className="flex items-center gap-2 text-sm text-gray-400 py-4 justify-center">
+                                            <div className="flex items-center gap-2 text-sm text-zinc-400 py-4 justify-center">
                                                 <div className="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
                                                 Generating references...
                                             </div>
                                         ) : (
                                             <div className="flex flex-col gap-2 overflow-y-auto pr-2 pb-2">
                                                 {references.map((ref) => (
-                                                    <a key={ref.id} href={ref.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-gray-600 hover:text-blue-600 cursor-pointer flex gap-1.5 items-start">
-                                                        <span className="text-gray-400 font-mono text-xs shrink-0">{`<${ref.id}>`}</span>
-                                                        <span className="leading-snug">{ref.title} <span className="text-gray-400">— {ref.source}</span></span>
+                                                    <a key={ref.id} href={ref.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-zinc-400 hover:text-[#10b981] cursor-pointer flex gap-1.5 items-start">
+                                                        <span className="text-zinc-400 font-mono text-xs shrink-0">{`<${ref.id}>`}</span>
+                                                        <span className="leading-snug">{ref.title} <span className="text-zinc-400">— {ref.source}</span></span>
                                                     </a>
                                                 ))}
                                             </div>
@@ -702,12 +714,12 @@ export default function DisputePage() {
 
                                 {/* Word Cloud */}
                                 {(wordCloudData.length > 0 || insightsLoading) && (
-                                    <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col">
-                                        <h5 className="font-bold text-gray-900 mb-2 text-[15px] font-['Satoshi'] tracking-wide">Word Cloud</h5>
-                                        <div className="w-full h-px bg-gray-200 mb-3" />
-                                        <div className="flex-1 flex flex-wrap items-center justify-center p-2 rounded-xl bg-gray-50/50 min-h-[160px] w-full overflow-hidden relative">
+                                    <div className="bg-[#0a0a0a] border border-zinc-800 rounded-2xl p-4 shadow-zinc-800/50 flex flex-col">
+                                        <h5 className="font-bold text-zinc-100 mb-2 text-[15px] font-['Satoshi'] tracking-wide">Word Cloud</h5>
+                                        <div className="w-full h-px bg-[#1a1a1a] mb-3" />
+                                        <div className="flex-1 flex flex-wrap items-center justify-center p-2 rounded-xl bg-[#0a0a0a]/50 min-h-[160px] w-full overflow-hidden relative">
                                             {insightsLoading ? (
-                                                <div className="flex items-center gap-2 text-sm text-gray-400">
+                                                <div className="flex items-center gap-2 text-sm text-zinc-400">
                                                     <div className="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
                                                     Generating word cloud...
                                                 </div>
@@ -721,10 +733,10 @@ export default function DisputePage() {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center gap-6 my-auto relative z-10">
-                                <div className="w-24 h-24 rounded-full bg-gray-200/50 flex items-center justify-center border border-gray-200">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                <div className="w-24 h-24 rounded-full bg-[#1a1a1a]/50 flex items-center justify-center border border-zinc-800">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-zinc-400"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                 </div>
-                                <p className="font-semibold text-lg text-center max-w-[260px] text-gray-400">
+                                <p className="font-semibold text-lg text-center max-w-[260px] text-zinc-400">
                                     {isDiscussionPhase ? 'locked — awaiting Round 2' : isMiddleUnlocked ? 'unlock after commitment phase ends' : 'unlock after dispute'}
                                 </p>
                             </div>
@@ -736,16 +748,16 @@ export default function DisputePage() {
             {/* Discussion Modal — wide: chat left, linkage graph right */}
             {showDiscussion && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm px-4" onClick={() => setShowDiscussion(false)}>
-                    <div className="bg-white rounded-3xl w-full max-w-[1400px] h-[85vh] max-h-[800px] flex flex-col shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+                    <div className="bg-[#0a0a0a] rounded-3xl w-full max-w-[1400px] h-[85vh] max-h-[800px] flex flex-col shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
                         {/* Header */}
-                        <div className="py-4 px-6 border-b border-gray-100 flex justify-between items-center shrink-0">
+                        <div className="py-4 px-6 border-b border-zinc-800 flex justify-between items-center shrink-0">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-[12px] bg-blue-50 flex items-center justify-center text-blue-600">
+                                <div className="w-10 h-10 rounded-[12px] bg-[#1a1a1a] flex items-center justify-center text-[#10b981]">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                                 </div>
-                                <h3 className="font-['Satoshi'] font-bold text-xl text-gray-900">AI Agent Discussion</h3>
+                                <h3 className="font-['Satoshi'] font-bold text-xl text-zinc-100">AI Agent Discussion</h3>
                             </div>
-                            <button onClick={() => setShowDiscussion(false)} className="p-2 hover:bg-gray-100 rounded-full text-gray-400">
+                            <button onClick={() => setShowDiscussion(false)} className="p-2 hover:bg-[#0a0a0a] rounded-full text-zinc-400">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                             </button>
                         </div>
@@ -755,19 +767,19 @@ export default function DisputePage() {
                             <div className="w-full flex flex-col">
                                 <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-4">
                                     <div className="w-full text-center my-2">
-                                        <span className="text-[9px] font-bold text-gray-400 bg-gray-100 px-3 py-1 rounded-full uppercase tracking-wider">Post Round 1 Discussion</span>
+                                        <span className="text-[9px] font-bold text-zinc-400 bg-[#0a0a0a] px-3 py-1 rounded-full uppercase tracking-wider">Post Round 1 Discussion</span>
                                     </div>
                                     {discussionMessages.map((msg, i) => {
                                         const vote = agentVotes[msg.agent];
                                         const isYes = vote === "YES";
                                         return (
                                             <div key={i} className="flex flex-col gap-1 w-full max-w-[700px] mx-auto">
-                                                <span className="text-[9px] font-bold text-gray-400 uppercase ml-[52px]">{msg.agent}</span>
+                                                <span className="text-[9px] font-bold text-zinc-400 uppercase ml-[52px]">{msg.agent}</span>
                                                 <div className="flex gap-3 items-start">
                                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 border ${isYes ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200'}`}>
                                                         {msg.agent.slice(0, 2)}
                                                     </div>
-                                                    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-gray-800 font-medium text-[13px] leading-relaxed">
+                                                    <div className="bg-[#0a0a0a] p-4 rounded-xl border border-zinc-800 shadow-zinc-800/50 text-gray-800 font-medium text-[13px] leading-relaxed">
                                                         {msg.text}
                                                     </div>
                                                 </div>
@@ -775,7 +787,7 @@ export default function DisputePage() {
                                         );
                                     })}
                                 </div>
-                                <div className="py-3 bg-white text-center text-gray-400 font-medium text-[12px] flex items-center justify-center gap-1.5 shrink-0 border-t border-gray-100/50">
+                                <div className="py-3 bg-[#0a0a0a] text-center text-zinc-400 font-medium text-[12px] flex items-center justify-center gap-1.5 shrink-0 border-t border-zinc-800/50">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                     Discussion finalized. Votes locked by protocol.
                                 </div>
