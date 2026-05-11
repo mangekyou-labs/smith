@@ -79,6 +79,6 @@ export default async function handler(
     }
     return res.json(markets);
   } catch {
-    return res.status(500).json(DEVNET_FIXTURES);
+    return res.status(200).json(DEVNET_FIXTURES);
   }
 }

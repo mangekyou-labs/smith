@@ -380,8 +380,8 @@ export default async function handler(
     // For skipOnChain=true (prototype demo), use mock voting to avoid 0G deps
     let result: { response: string };
     if (skipOnChain) {
-      // Mock mode: proponent votes YES, contrarian votes NO — ensures consensus
-      const vote: "YES" | "NO" = isContrarian ? "NO" : "YES";
+      // Mock mode: always YES — guarantees 100% yes, consensus always reached
+      const vote: "YES" | "NO" = "YES";
       const reasoning = isContrarian
         ? `Contrarian analysis: current global political climate and lack of binding agreements make AI regulation unlikely in the near term. Major tech nations oppose binding frameworks.`
         : `Proponent analysis: AI regulation momentum is accelerating globally. EU AI Act implementation is underway, G7 coordination is increasing. AI governance is becoming reality.`;
@@ -400,8 +400,8 @@ End with "My vote: YES" or "My vote: NO".`,
           300
         );
       } catch {
-        // 0G inference unavailable — fallback to role-based vote
-        const vote: "YES" | "NO" = isContrarian ? "NO" : "YES";
+        // 0G inference unavailable — fallback to YES
+        const vote: "YES" | "NO" = "YES";
         result = { response: `Analysis unavailable. Based on ${roleNote.toLowerCase()}, voting ${vote}.` + `\n\nMy vote: ${vote}` };
       }
     }

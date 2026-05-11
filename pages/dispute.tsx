@@ -235,7 +235,7 @@ export default function DisputePage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    marketIdHex: marketId.startsWith("0x") ? marketId : Buffer.from(marketId, "utf8").toString("hex"),
+                    marketIdHex: marketId.startsWith("0x") ? marketId : `0x${marketId}`,
                     question: marketQuestion || "Market resolution",
                     committeeSize: 5,
                     round: 1,
@@ -319,7 +319,7 @@ export default function DisputePage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    marketIdHex: marketId.startsWith("0x") ? marketId : Buffer.from(marketId, "utf8").toString("hex"),
+                    marketIdHex: marketId.startsWith("0x") ? marketId : `0x${marketId}`,
                     question: marketQuestion || "Market resolution",
                     committeeSize: 5,
                     round: 2,
@@ -361,7 +361,7 @@ export default function DisputePage() {
             }
 
             animateReveals(agents, votes, () => {
-                if (data.resolved) {
+                if (data.consensus && data.consensus !== "null") {
                     setFinalConsensus(data.consensus);
                     setDisputeStep(7);
                 }
@@ -543,21 +543,47 @@ export default function DisputePage() {
                                         )}
                                         {repUpdates.length > 0 && (
                                             <div className="mt-3 pt-3 border-t border-zinc-800">
-                                                <div className="text-[10px] font-bold text-zinc-400 uppercase mb-1">USDC Payout</div>
-                                                {repUpdates.map((u, i) => (
-                                                    <div key={i} className="flex justify-between text-[11px] py-0.5">
-                                                        <span className="text-zinc-400">{u.agent}</span>
-                                                        <span className={u.correct ? "text-emerald-600 font-bold" : "text-zinc-400 font-bold"}>
-                                                            {u.correct ? '+$10.00' : '$0.00'}
-                                                        </span>
-                                                    </div>
-                                                ))}
-                                                <div className="flex justify-between text-[11px] pt-1.5 mt-1.5 border-t border-zinc-800">
-                                                    <span className="font-bold text-zinc-200">Total Paid</span>
-                                                    <span className="font-bold text-emerald-600">
-                                                        ${(repUpdates.filter(u => u.correct).length * 10).toFixed(2)}
-                                                    </span>
-                                                </div>
+                                                <div className="text-[10px] font-bold text-zinc-400 uppercase mb-1">Simulated Bettor Payout</div>
+                                                {(() => {
+                                                    const yesPool = 150;
+                                                    const noPool = 75;
+                                                    const totalPool = yesPool + noPool;
+                                                    const winningPool = consensus === "YES" ? yesPool : noPool;
+                                                    const bettors = [
+                                                        { name: "User A", shortAddr: "7o...Pk", betAmount: 100, outcome: "YES", wallet: "7oTz...Pk" },
+                                                        { name: "User B", shortAddr: "3x...Ly", betAmount: 50, outcome: "YES", wallet: "3xBz...Ly" },
+                                                        { name: "User C", shortAddr: "9k...Qr", betAmount: 75, outcome: "NO", wallet: "9kRm...Qr" },
+                                                    ];
+                                                    return (
+                                                        <>
+                                                            {bettors.map((b, i) => {
+                                                                const won = (consensus === "YES" && b.outcome === "YES") || (consensus === "NO" && b.outcome === "NO");
+                                                                const payout = won ? Math.round((b.betAmount * totalPool) / winningPool * 100) / 100 : 0;
+                                                                return (
+                                                                    <div key={i} className="flex justify-between text-[11px] py-0.5">
+                                                                        <span className="text-zinc-400">{b.name} ({b.outcome})</span>
+                                                                        <span className={won ? "text-emerald-600 font-bold" : "text-zinc-400 font-bold"}>
+                                                                            {won ? `+$${payout.toFixed(2)}` : "$0.00"}
+                                                                        </span>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                            <div className="flex justify-between text-[11px] pt-1.5 mt-1.5 border-t border-zinc-800">
+                                                                <span className="font-bold text-zinc-200">Total Pool</span>
+                                                                <span className="font-bold text-zinc-200">${totalPool}</span>
+                                                            </div>
+                                                            <div className="mt-2 pt-2 border-t border-zinc-700">
+                                                                <div className="text-[10px] text-zinc-500 mb-1">Pool breakdown: YES ${yesPool} / NO ${noPool}</div>
+                                                                <button
+                                                                    onClick={() => alert("Claim Payout: simulated — connect wallet to claim real winnings")}
+                                                                    className="w-full mt-2 px-4 py-2 rounded-lg bg-[#10b981] hover:bg-[#059669] text-white font-bold text-xs transition-colors"
+                                                                >
+                                                                    Claim Payout
+                                                                </button>
+                                                            </div>
+                                                        </>
+                                                    );
+                                                })()}
                                             </div>
                                         )}
                                     </div>
