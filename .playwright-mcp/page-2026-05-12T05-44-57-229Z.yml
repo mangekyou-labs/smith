@@ -1,0 +1,120 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - navigation [ref=e6]:
+          - link "Home" [ref=e7] [cursor=pointer]:
+            - /url: /
+          - link "Market" [ref=e8] [cursor=pointer]:
+            - /url: /market
+        - generic [ref=e10]: SMITH
+        - generic [ref=e12]:
+          - button "Select Wallet" [ref=e13]
+          - menu "dropdown-list" [ref=e14]:
+            - menuitem "Change wallet" [ref=e15]
+    - main [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Powered by Encrypt — dWallet Labs
+        - heading "Confidential Betting" [level=1] [ref=e19]
+        - paragraph [ref=e20]: Your bets are encrypted on-chain using Fully Homomorphic Encryption (FHE). Nobody — not even the oracle — can see your position until the market resolves.
+      - paragraph [ref=e22]:
+        - strong [ref=e23]: "Pre-alpha:"
+        - text: Encryption is currently mocked. All data is stored publicly on-chain as plaintext. Real FHE (REFHE) is planned for production.
+      - generic [ref=e24]:
+        - heading "How FHE Confidential Betting Works" [level=2] [ref=e25]
+        - generic [ref=e26]:
+          - generic [ref=e27]: "1"
+          - generic [ref=e28]:
+            - heading "Encrypt your bet" [level=3] [ref=e29]
+            - paragraph [ref=e30]: Your bet amount and vote (YES/NO) are encrypted locally before being submitted on-chain. The ciphertext is unreadable by anyone.
+            - generic [ref=e32]:
+              - generic [ref=e33]: "Encrypted payload (mock, pre-alpha):"
+              - generic [ref=e34]:
+                - generic [ref=e35]: "fhe_type: EBool (0)"
+                - generic [ref=e36]:
+                  - text: "encrypted_value:"
+                  - code [ref=e37]: "0001000000000000000000000000000000"
+                - generic [ref=e38]:
+                  - text: "bet_amount (EUint64):"
+                  - code [ref=e39]: "0464000000000000000000000000000000"
+        - generic [ref=e40]:
+          - generic [ref=e41]: "2"
+          - generic [ref=e42]:
+            - heading "Submit encrypted position on-chain" [level=3] [ref=e43]
+            - paragraph [ref=e44]: The encrypted bet is recorded in the confidential-market program. The contract can perform computations on the encrypted data without ever decrypting it.
+            - generic [ref=e46]:
+              - generic [ref=e47]: "On-chain accounts touched:"
+              - generic [ref=e48]:
+                - generic [ref=e49]: → confidential_market::Market
+                - generic [ref=e50]: → encrypt::Ciphertext (bet amount)
+                - generic [ref=e51]: → encrypt::Ciphertext (vote)
+                - generic [ref=e52]: → vault (escrow)
+        - generic [ref=e53]:
+          - generic [ref=e54]: "3"
+          - generic [ref=e55]:
+            - heading "Oracle computes on encrypted data" [level=3] [ref=e56]
+            - paragraph [ref=e57]: The AI oracle runs its inference inside a TEE enclave and produces an encrypted vote. The encrypted votes are aggregated — YES and NO pools are tallied without revealing individual positions.
+            - generic [ref=e59]:
+              - generic [ref=e60]: "FHE graph executed on-chain:"
+              - generic [ref=e61]:
+                - generic [ref=e62]: cast_vote_graph(yes_count, no_count, vote)
+                - generic [ref=e63]: → conditionally increments yes_pool or no_pool
+                - generic [ref=e64]: Computation happens entirely on encrypted data. The result is also encrypted.
+        - generic [ref=e65]:
+          - generic [ref=e66]: "4"
+          - generic [ref=e67]:
+            - heading "Market resolves — decryption requested" [level=3] [ref=e68]
+            - paragraph [ref=e69]: After the market resolves, a decryption request is sent. The encrypted payout is revealed only to the contract — your individual position stays private until settlement.
+            - generic [ref=e71]:
+              - generic [ref=e72]: "FHE payout graph:"
+              - generic [ref=e73]:
+                - generic [ref=e74]: compute_payout_graph_yes(bet, yes_pool, no_pool)
+                - generic [ref=e75]: compute_payout_graph_no(bet, yes_pool, no_pool)
+                - generic [ref=e76]: → encrypted result verified by contract → settlement
+      - generic [ref=e77]:
+        - heading "Live Demo (Devnet)" [level=2] [ref=e78]
+        - paragraph [ref=e79]: Connect your wallet to simulate the FHE betting flow locally. This uses the mock client — no real encryption.
+        - generic [ref=e80]:
+          - paragraph [ref=e81]: Connect your wallet to try the demo
+          - generic [ref=e82]:
+            - button "Select Wallet" [ref=e83]
+            - menu "dropdown-list" [ref=e84]:
+              - menuitem "Change wallet" [ref=e85]
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: Bet Amount (USDC)
+              - spinbutton [ref=e90]: "100"
+            - generic [ref=e91]:
+              - generic [ref=e92]: Vote
+              - generic [ref=e93]:
+                - button "YES" [ref=e94]
+                - button "NO" [ref=e95]
+          - generic [ref=e96]:
+            - generic [ref=e97]: "Simulation log:"
+            - generic [ref=e98]:
+              - text: → encryptValue(100, EUint64) →
+              - code [ref=e99]: "0464000000000000000000000000000000"
+          - generic [ref=e100]:
+            - button "Encrypt Bet" [ref=e101]
+            - button "Reset" [ref=e102]
+      - generic [ref=e103]:
+        - heading "Technical Details" [level=2] [ref=e104]
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]: Encrypt Program
+            - generic [ref=e108]: Cq37zHSH1zB6xomYK2LjP6uXJvLR3uTehxA5W9wgHGvx
+          - generic [ref=e109]:
+            - generic [ref=e110]: Confidential Market
+            - generic [ref=e111]: BB17yKcbp9qNyokaNPo29gjFK9aYBEH69wpQgiRPZhwz
+          - generic [ref=e112]:
+            - generic [ref=e113]: gRPC Endpoint
+            - generic [ref=e114]: pre-alpha-dev-1.encrypt.ika-network.net:443
+          - generic [ref=e115]:
+            - generic [ref=e116]: SDK
+            - generic [ref=e117]: "@encrypt.xyz/pre-alpha-solana-client"
+        - generic [ref=e119]: "FHE graphs: cast_vote_graph, compute_payout_graph_yes, compute_payout_graph_no. CPI via encrypt-anchor SDK."
+      - generic [ref=e120]: © 2026 Smith Protocol — Built on Solana Devnet · FHE by dWallet Labs
+  - button "Open Next.js Dev Tools" [ref=e126] [cursor=pointer]:
+    - img [ref=e127]
+  - alert [ref=e130]

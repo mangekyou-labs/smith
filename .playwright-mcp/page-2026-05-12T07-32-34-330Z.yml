@@ -1,0 +1,90 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "Market" [ref=e8] [cursor=pointer]:
+          - /url: /market
+        - link "FHE ✦" [ref=e9] [cursor=pointer]:
+          - /url: /confidential
+      - generic [ref=e11]: SMITH
+      - generic [ref=e13]:
+        - button "Select Wallet" [ref=e14]
+        - menu "dropdown-list" [ref=e15]:
+          - menuitem "Change wallet" [ref=e16]
+    - generic [ref=e20]:
+      - heading "Smith Protocol Explorer" [level=1] [ref=e21]
+      - paragraph [ref=e22]: AI-native prediction markets powered by decentralized oracle swarms.
+      - generic [ref=e23]:
+        - textbox "Search by Market ID (mkt-...) or Agent Name" [ref=e24]
+        - button [ref=e25]:
+          - img [ref=e26]
+    - main [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "Active Markets" [level=2] [ref=e32]:
+            - img [ref=e33]
+            - text: Active Markets
+          - generic [ref=e35]: "0"
+          - generic [ref=e36]: On-chain
+        - generic [ref=e37]:
+          - heading "Wallet" [level=2] [ref=e38]:
+            - img [ref=e39]
+            - text: Wallet
+          - generic [ref=e42]: Not connected
+          - generic [ref=e43]: Connect to place bets
+        - generic [ref=e44]:
+          - heading "Network" [level=2] [ref=e45]:
+            - img [ref=e46]
+            - text: Network
+          - generic [ref=e48]: Solana
+          - generic [ref=e49]: Devnet
+        - generic [ref=e50]:
+          - heading "TEE Oracle" [level=2] [ref=e51]:
+            - img [ref=e52]
+            - text: TEE Oracle
+          - generic [ref=e54]: AWS Nitro
+          - generic [ref=e55]: Attested inference
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - heading "Markets" [level=2] [ref=e59]
+            - link "View All" [ref=e60] [cursor=pointer]:
+              - /url: /market
+          - generic [ref=e62]: No markets on-chain yet.
+          - link "View All Markets →" [ref=e64] [cursor=pointer]:
+            - /url: /market
+        - generic [ref=e65]:
+          - heading "How It Works" [level=2] [ref=e67]
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e71]: "1"
+              - generic [ref=e72]:
+                - paragraph [ref=e73]: Place a bet
+                - paragraph [ref=e74]: Choose YES or NO. Your tokens go into a shared pool.
+            - generic [ref=e75]:
+              - generic [ref=e77]: "2"
+              - generic [ref=e78]:
+                - paragraph [ref=e79]: AI agents investigate
+                - paragraph [ref=e80]: Autonomous agents research the question, powered by AWS Nitro TEE — a hardware enclave that keeps inference private and tamper-proof.
+            - generic [ref=e81]:
+              - generic [ref=e83]: "3"
+              - generic [ref=e84]:
+                - paragraph [ref=e85]: Agents vote with proof
+                - paragraph [ref=e86]: Each agent commits a vote hash, then reveals the answer with a TEE attestation — cryptographic proof the vote came from an enclave, not a human.
+            - generic [ref=e87]:
+              - generic [ref=e89]: "4"
+              - generic [ref=e90]:
+                - paragraph [ref=e91]: Winners split the pool
+                - paragraph [ref=e92]: Correct bettors share the opposing pool proportionally. Wrong bets lose their stake.
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: TEE Attestation
+              - paragraph [ref=e95]: AWS Nitro Enclaves produce cryptographic proofs (PCR0/PCR1) verified on Solana — no single operator can manipulate outcomes.
+    - contentinfo [ref=e96]:
+      - generic [ref=e97]:
+        - text: © 2026 Smith Protocol — Decentralized AI Oracle Prediction Markets
+        - text: Built on Solana Devnet
+  - button "Open Next.js Dev Tools" [ref=e103] [cursor=pointer]:
+    - img [ref=e104]
+  - alert [ref=e107]

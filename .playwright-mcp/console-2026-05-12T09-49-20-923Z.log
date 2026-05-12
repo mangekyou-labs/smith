@@ -1,0 +1,48 @@
+[     189ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[     197ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     197ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/home":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2791:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2805:17)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2679:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2324:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     251ms] [WARNING] Do not add stylesheets using next/head (see <link rel="stylesheet"> tag with href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap"). Use Document instead. 
+See more info here: https://nextjs.org/docs/messages/no-stylesheets-in-head-component @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     517ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     518ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     768ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     769ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    1016ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    1016ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   31603ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   31603ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   31934ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   31935ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   32243ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   32243ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   62816ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   62817ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   63085ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   63085ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   63349ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   63349ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   93875ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   93875ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   94142ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   94142ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   94407ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   94407ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125004ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125005ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125287ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125288ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125632ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  125632ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156174ms] [LOG] [DEBUG S1] PDA: 48Pxc7Mg5xkWsbyEaEjLVdvCgB9KNZAo2ER4rcdJuidB data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156174ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156454ms] [LOG] [DEBUG S1] PDA: G12WPS4i9UWn7qkgh8VJXPAQGkB7yPF4ub3ewEHPbX3p data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156455ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156721ms] [LOG] [DEBUG S1] PDA: 4mcPozgjP9sgDCj4d6CipfE5NeYAKnvMhonmYzsw18db data len: 331 first 8: [219, 190, 213, 55, 0, 227, 198, 154] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  156722ms] [LOG] [DEBUG S1] decoded market: NULL @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  173655ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  173793ms] [LOG] [Fast Refresh] done in 27ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226

@@ -1,0 +1,18 @@
+[      30ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_buildManifest.js:0
+[      30ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_ssgManifest.js:0
+[      31ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_clientMiddlewareManifest.js:0
+[    3839ms] [ERROR] Error was not caught Error: Failed to load client middleware manifest
+    at m.getMiddleware (http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:1:186728)
+    at U (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:4:14681)
+    at new Q (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:4:22089)
+    at g (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:5:327)
+    at ed (http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:1:206246) @ http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:0
+[    5942ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_buildManifest.js:0
+[    5942ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_ssgManifest.js:0
+[    5942ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_clientMiddlewareManifest.js:0
+[    9751ms] [ERROR] Error was not caught Error: Failed to load client middleware manifest
+    at m.getMiddleware (http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:1:186728)
+    at U (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:4:14681)
+    at new Q (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:4:22089)
+    at g (http://localhost:3000/_next/static/chunks/0zttme1szwyjw.js:5:327)
+    at ed (http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:1:206246) @ http://localhost:3000/_next/static/chunks/0j8kaagjfz7sw.js:0

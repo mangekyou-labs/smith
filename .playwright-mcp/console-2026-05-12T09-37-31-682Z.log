@@ -1,0 +1,21 @@
+[     117ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[     160ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    1075ms] [WARNING] Do not add stylesheets using next/head (see <link rel="stylesheet"> tag with href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap"). Use Document instead. 
+See more info here: https://nextjs.org/docs/messages/no-stylesheets-in-head-component @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    2251ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[    4614ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[    8089ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   13312ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   44645ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   46871ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   50173ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   55397ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   86558ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   88710ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   92357ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   97562ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  108942ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  108961ms] [LOG] [Fast Refresh] done in 28ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  108976ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  109108ms] [LOG] [Fast Refresh] done in 9ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  110284ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0

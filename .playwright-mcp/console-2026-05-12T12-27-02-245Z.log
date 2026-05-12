@@ -1,0 +1,236 @@
+[    1641ms] [ERROR] TypeError: Cannot read properties of null (reading 'sendMessage')
+    at bt.sendMessage (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:459:482)
+    at bt.Rd (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:469:472)
+    at X.C (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:528:443)
+    at VHd (https://www.google.com/xjs/_/js/k=xjs.s.vi.THBFKf4yUis.2019.O/ck=xjs.s.vSRP1glYzvY.L.B1.O/am=AACEAAAAQQAAAAAAAAAAAAACAIgAAAAAAAAAAAAAAAAAAAAQAAQAACAAAAAAAAAACAAAAAAAAAABAAAAAABAAAAAgAEEQAAAACUAQAAAEYAAAEwAAAAAAAAAQCF9AAEAGgAAAAAA4AHAACECAAAAAAAAAAABAQQgAABIAAAAAAAAAAABAAAAABAAAAAAAQAAAAADABgAAAKIhAAAAKhQAAAAAQAABAAAAAAAAAAAgCAEAAAASCABAAD8bXwDPAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAGJNIAAAAAAAAACAMWAAAAQCgMAAAgAAgEQAAAAAAAAEBAAhAAAAEDgAAAAAgAAAAAAAAAAIAAAIKAQgAAAoACEBAAABAAOAAAAAAAAABAQAAAAAAAgAEACABAQABCAAEAAAAAgAAAoAAEAAAAkAMAAAAAAAAgIAIAAQgAACPIAAAkCgIgAgBAAAAMAAARAAAAAKAACCCBHwAgAAIAAAAAAOAEAAAAACAQAAAAkADwUggEAAgAAAAAIAfA4wE4RFAAAAAAAAAAAAAAAAAAAAAAAAAAQAAUwDiQ_IIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAECKsCkAAAAAAMDWAIA/d=0/dg=0/br=1/ujg=1/rs=ACT90oEAxP_qWszKET_LdT3Fyvw-iol9hg/cb=loaded_h_0/m=sy1nk,sy1nj,sy1ni,HIg7cd,syvl,QVaUhf,sy1np,sy1no,sy1nm,sy1nn,SJpD2c,eAR4Hf,sy6bg,nN2e1e,kQvlef,sy37u,WlNQGd,sy1tp,syy3,sy1um,Tia57b,KpRAue,X8jtef,sy6bh,OXpAmf,sy5rq,sy36m,sy13p,syxr,syxi,sy1sg,sy1se,sy1sh,sy5rp,nRwWne,sy4bk,sy4bg,sy4b7,sy4b6,sy4b4,UHgVpe,sy1tt,sy1u0,sy1u5,sy1uo,NyeqM,sy8rf,sy8pr,sy8rd,sy75v,syvx,syw2,O63OXd,syjd,aLUfP,wQlYve,sy3hl,sy2og,syyy,syyz,syyu,syz0,syyt,syz1,syyj,syyi,syyh,syyk,syz2,syz3,syyc,eZ9XOd,sytl,sytk,sytm,L1AAkb,sy12p,sy12q,YjTCDb,sy12n,sy12o,q00IXe,syj8,sy12b,BYwJlf,syy1,syy2,rtH1bd,PGyklf,sy12v,syy6,sy12u,sy12t,sy12r,sy12g,sy12y,Fh0l0,sy1i9,sy1ia,pzkXnb,sy14p,sy12a,FRLJrd,sy1ic,sy1id,eBYPP,sy6a2,HYSCof,sy6bt,sHZ92c,VEbNoe,sy9sg,sy745,sy1tv,KSk4yc,sy636,IlbVv?xjs=s3:44:455)
+    at https://www.google.com/xjs/_/js/k=xjs.s.vi.THBFKf4yUis.2019.O/ck=xjs.s.vSRP1glYzvY.L.B1.O/am=AACEAAAAQQAAAAAAAAAAAAACAIgAAAAAAAAAAAAAAAAAAAAQAAQAACAAAAAAAAAACAAAAAAAAAABAAAAAABAAAAAgAEEQAAAACUAQAAAEYAAAEwAAAAAAAAAQCF9AAEAGgAAAAAA4AHAACECAAAAAAAAAAABAQQgAABIAAAAAAAAAAABAAAAABAAAAAAAQAAAAADABgAAAKIhAAAAKhQAAAAAQAABAAAAAAAAAAAgCAEAAAASCABAAD8bXwDPAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAGJNIAAAAAAAAACAMWAAAAQCgMAAAgAAgEQAAAAAAAAEBAAhAAAAEDgAAAAAgAAAAAAAAAAIAAAIKAQgAAAoACEBAAABAAOAAAAAAAAABAQAAAAAAAgAEACABAQABCAAEAAAAAgAAAoAAEAAAAkAMAAAAAAAAgIAIAAQgAACPIAAAkCgIgAgBAAAAMAAARAAAAAKAACCCBHwAgAAIAAAAAAOAEAAAAACAQAAAAkADwUggEAAgAAAAAIAfA4wE4RFAAAAAAAAAAAAAAAAAAAAAAAAAAQAAUwDiQ_IIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAECKsCkAAAAAAMDWAIA/d=0/dg=0/br=1/ujg=1/rs=ACT90oEAxP_qWszKET_LdT3Fyvw-iol9hg/cb=loaded_h_0/m=sy1nk,sy1nj,sy1ni,HIg7cd,syvl,QVaUhf,sy1np,sy1no,sy1nm,sy1nn,SJpD2c,eAR4Hf,sy6bg,nN2e1e,kQvlef,sy37u,WlNQGd,sy1tp,syy3,sy1um,Tia57b,KpRAue,X8jtef,sy6bh,OXpAmf,sy5rq,sy36m,sy13p,syxr,syxi,sy1sg,sy1se,sy1sh,sy5rp,nRwWne,sy4bk,sy4bg,sy4b7,sy4b6,sy4b4,UHgVpe,sy1tt,sy1u0,sy1u5,sy1uo,NyeqM,sy8rf,sy8pr,sy8rd,sy75v,syvx,syw2,O63OXd,syjd,aLUfP,wQlYve,sy3hl,sy2og,syyy,syyz,syyu,syz0,syyt,syz1,syyj,syyi,syyh,syyk,syz2,syz3,syyc,eZ9XOd,sytl,sytk,sytm,L1AAkb,sy12p,sy12q,YjTCDb,sy12n,sy12o,q00IXe,syj8,sy12b,BYwJlf,syy1,syy2,rtH1bd,PGyklf,sy12v,syy6,sy12u,sy12t,sy12r,sy12g,sy12y,Fh0l0,sy1i9,sy1ia,pzkXnb,sy14p,sy12a,FRLJrd,sy1ic,sy1id,eBYPP,sy6a2,HYSCof,sy6bt,sHZ92c,VEbNoe,sy9sg,sy745,sy1tv,KSk4yc,sy636,IlbVv?xjs=s3:45:296
+    at https://www.google.com/xjs/_/js/k=xjs.s.vi.THBFKf4yUis.2019.O/ck=xjs.s.vSRP1glYzvY.L.B1.O/am=AACEAAAAQQAAAAAAAAAAAAACAIgAAAAAAAAAAAAAAAAAAAAQAAQAACAAAAAAAAAACAAAAAAAAAABAAAAAABAAAAAgAEEQAAAACUAQAAAEYAAAEwAAAAAAAAAQCF9AAEAGgAAAAAA4AHAACECAAAAAAAAAAABAQQgAABIAAAAAAAAAAABAAAAABAAAAAAAQAAAAADABgAAAKIhAAAAKhQAAAAAQAABAAAAAAAAAAAgCAEAAAASCABAAD8bXwDPAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAGJNIAAAAAAAAACAMWAAAAQCgMAAAgAAgEQAAAAAAAAEBAAhAAAAEDgAAAAAgAAAAAAAAAAIAAAIKAQgAAAoACEBAAABAAOAAAAAAAAABAQAAAAAAAgAEACABAQABCAAEAAAAAgAAAoAAEAAAAkAMAAAAAAAAgIAIAAQgAACPIAAAkCgIgAgBAAAAMAAARAAAAAKAACCCBHwAgAAIAAAAAAOAEAAAAACAQAAAAkADwUggEAAgAAAAAIAfA4wE4RFAAAAAAAAAAAAAAAAAAAAAAAAAAQAAUwDiQ_IIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAECKsCkAAAAAAMDWAIA/d=0/dg=0/br=1/ujg=1/rs=ACT90oEAxP_qWszKET_LdT3Fyvw-iol9hg/cb=loaded_h_0/m=sy1nk,sy1nj,sy1ni,HIg7cd,syvl,QVaUhf,sy1np,sy1no,sy1nm,sy1nn,SJpD2c,eAR4Hf,sy6bg,nN2e1e,kQvlef,sy37u,WlNQGd,sy1tp,syy3,sy1um,Tia57b,KpRAue,X8jtef,sy6bh,OXpAmf,sy5rq,sy36m,sy13p,syxr,syxi,sy1sg,sy1se,sy1sh,sy5rp,nRwWne,sy4bk,sy4bg,sy4b7,sy4b6,sy4b4,UHgVpe,sy1tt,sy1u0,sy1u5,sy1uo,NyeqM,sy8rf,sy8pr,sy8rd,sy75v,syvx,syw2,O63OXd,syjd,aLUfP,wQlYve,sy3hl,sy2og,syyy,syyz,syyu,syz0,syyt,syz1,syyj,syyi,syyh,syyk,syz2,syz3,syyc,eZ9XOd,sytl,sytk,sytm,L1AAkb,sy12p,sy12q,YjTCDb,sy12n,sy12o,q00IXe,syj8,sy12b,BYwJlf,syy1,syy2,rtH1bd,PGyklf,sy12v,syy6,sy12u,sy12t,sy12r,sy12g,sy12y,Fh0l0,sy1i9,sy1ia,pzkXnb,sy14p,sy12a,FRLJrd,sy1ic,sy1id,eBYPP,sy6a2,HYSCof,sy6bt,sHZ92c,VEbNoe,sy9sg,sy745,sy1tv,KSk4yc,sy636,IlbVv?xjs=s3:3:932
+    at Object.v (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:128:285)
+    at Array.forEach (<anonymous>)
+    at Object.Vd (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:69:881)
+    at Ph (https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:127:662) @ https://www.gstatic.com/og/_/js/k=og.asy.en_US.ZTFfd0_GMqE.2019.O/rt=j/m=_ac,_awd,ada,lldp,qads/exm=/d=1/ed=1/rs=AA2YrTtLXoys3Rg2wAJFxAA9UrajU-uuvQ:126
+[    4069ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    4704ms] [WARNING] A matching frame for #repo-content-turbo-frame was missing from the response, transforming into full-page Visit. @ https://github.githubassets.com/assets/26533-f22c29ae5e9b1ed2.js:15
+[    6079ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    6237ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    6352ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    6936ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    7610ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    9098ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[   11818ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[   28039ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[   34450ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://viblo.asia/socket.io/?EIO=3&transport=polling&t=PuSA32n:0
+[   34680ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:252501
+    at m (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:1312222)
+    at Generator._invoke (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:1312010)
+    at Generator.next (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:1312647)
+    at r (https://viblo.asia/_nuxt/settings.594b4bb7030a72a340b2.js:2:1118)
+    at f (https://viblo.asia/_nuxt/settings.594b4bb7030a72a340b2.js:2:1321)
+[   34985ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://sentry.sun-asterisk.vn/api/9/store/?sentry_key=acfd0104d7804a0dbb37001f5e9fbdae&sentry_version=7:0
+[   35199ms] [WARNING] [GSI_LOGGER]: Your client application uses one of the Google One Tap prompt UI status methods that may stop functioning when FedCM becomes mandatory. Refer to the migration guide to update your code accordingly and opt-in to FedCM to test your changes. Learn more: https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#display_moment and https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#skipped_moment @ https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:1
+[   35203ms] [ERROR] Not signed in with the identity provider. @ https://viblo.asia/p/claude-code20-skills-can-thiet-cho-agenthuong-dan-su-dung-skillssh-ym4008po491:0
+[   36050ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:1
+[   38461ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://viblo.asia/socket.io/?EIO=3&transport=polling&t=PuSA42g:0
+[   43645ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://viblo.asia/socket.io/?EIO=3&transport=polling&t=PuSA5Ih:0
+[   44680ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[   44822ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://sentry.sun-asterisk.vn/api/9/store/?sentry_key=acfd0104d7804a0dbb37001f5e9fbdae&sentry_version=7:0
+[   54679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[   64679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[   74679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[   84679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[   94679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  104679ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  114680ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  124681ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  134683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  144683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  154682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  164682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  174682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  184680ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  194681ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  204682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  214682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  224681ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  234682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  244681ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  254683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  264683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  274683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  284683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  294683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  304683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  314683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  324682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  334684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  344682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  354684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  364683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  374683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  384684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  394684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  404682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  414684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  424683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  434683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  444682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  454684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  464684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  474684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  484683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  494683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  504684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  514683ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  524684ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)
+[  534682ms] TypeError: Cannot read properties of undefined (reading '_id')
+    at $ (https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:174593)
+    at https://viblo.asia/_nuxt/survey.b5d0d68b0238beede3e7.js:1:175534
+    at l (https://viblo.asia/_nuxt/tag.1d411c9cf1d718f37acd.js:2:106528)

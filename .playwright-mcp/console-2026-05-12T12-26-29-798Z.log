@@ -1,0 +1,6 @@
+[      -2ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/vercel/vercel-plugin/tree/HEAD/skills/v0-dev:0
+[     525ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/vercel/vercel-plugin/tree-commit-info/HEAD/skills/v0-dev:0
+[    1922ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    3380ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[    7220ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0
+[   10793ms] [ERROR] Failed to load resource: the server responded with a status of 503 () @ https://collector.github.com/github/collect:0

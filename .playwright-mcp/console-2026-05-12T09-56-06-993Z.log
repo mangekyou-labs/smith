@@ -1,0 +1,30 @@
+[      57ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[      75ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     133ms] [WARNING] Do not add stylesheets using next/head (see <link rel="stylesheet"> tag with href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap"). Use Document instead. 
+See more info here: https://nextjs.org/docs/messages/no-stylesheets-in-head-component @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  120464ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  120527ms] [LOG] [Fast Refresh] done in 87ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  250117ms] [ERROR] Each child in a list should have a unique "key" prop.%s%s See https://react.dev/link/warning-keys for more information. 
+
+Check the render method of `Market`.  @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[  250128ms] [ERROR] %o
+
+%s
+
+%s
+ TypeError: Cannot read properties of undefined (reading 'status')
+    at AIMarketCard (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__01pr~vt._.js:3378:30)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8437:47)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9534:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/node_modules_11l9xip._.js:1335:64) The above error occurred in the <AIMarketCard> component. React will try to recreate this component tree from scratch using the error boundary you provided, PagesDevOverlayErrorBoundary. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[  611777ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 6622693ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 6622694ms] [LOG] [Fast Refresh] done in 102ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226

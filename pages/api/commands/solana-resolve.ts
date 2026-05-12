@@ -96,7 +96,7 @@ function hex32ToArray(hex: string): number[] {
 // Derived from the Agent account's on-chain human_id_hash field.
 // This was set during register_agent and must match for PDA derivation.
 function agentHumanIdHash(agent: AgentEntry): string {
-  return agent.humanIdHash;
+  return agent.humanId ?? "";
 }
 
 // ─── On-chain helpers ─────────────────────────────────────────────────────────
@@ -313,11 +313,11 @@ export default async function handler(
   if (allAgents.length === 0) {
     // Hardcoded fallback agents — ensures dispute flow always works in prototype/dev
     allAgents = [
-      { displayName: "AlphaOracle", inftTokenId: 2, reputation: 10, humanId: "0xabc", humanIdHash: "0xabc", domainTags: "ai,research", agentPda: "", authority: "" },
-      { displayName: "BetaAnalyst", inftTokenId: 3, reputation: 10, humanId: "0xdef", humanIdHash: "0xdef", domainTags: "ai,research", agentPda: "", authority: "" },
-      { displayName: "GammaOracle", inftTokenId: 4, reputation: 10, humanId: "0xghi", humanIdHash: "0xghi", domainTags: "ai,research", agentPda: "", authority: "" },
-      { displayName: "DeltaCritic", inftTokenId: 5, reputation: 10, humanId: "0xjkl", humanIdHash: "0xjkl", domainTags: "ai,research", agentPda: "", authority: "" },
-      { displayName: "EpsilonPolicy", inftTokenId: 6, reputation: 10, humanId: "0xmno", humanIdHash: "0xmno", domainTags: "ai,research", agentPda: "", authority: "" },
+      { displayName: "AlphaOracle", inftTokenId: 2, reputation: 10, humanId: "0xabc", domainTags: "ai,research" },
+      { displayName: "BetaAnalyst", inftTokenId: 3, reputation: 10, humanId: "0xdef", domainTags: "ai,research" },
+      { displayName: "GammaOracle", inftTokenId: 4, reputation: 10, humanId: "0xghi", domainTags: "ai,research" },
+      { displayName: "DeltaCritic", inftTokenId: 5, reputation: 10, humanId: "0xjkl", domainTags: "ai,research" },
+      { displayName: "EpsilonPolicy", inftTokenId: 6, reputation: 10, humanId: "0xmno", domainTags: "ai,research" },
     ];
   }
   const committee = selectCommittee(allAgents, committeeSize);

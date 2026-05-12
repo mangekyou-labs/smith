@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "Market" [ref=e8] [cursor=pointer]:
+          - /url: /market
+        - link "FHE ✦" [ref=e9] [cursor=pointer]:
+          - /url: /confidential
+      - generic [ref=e11]: SMITH
+      - button "Phantom icon Connect" [ref=e14] [cursor=pointer]:
+        - img "Phantom icon" [ref=e16]
+        - text: Connect
+    - main [ref=e17]:
+      - generic [ref=e18]:
+        - img [ref=e20]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: Finance
+            - generic [ref=e25]: ·
+            - generic [ref=e26]: Monthly
+          - heading "Will BTC exceed $100k by end of 2025?" [level=1] [ref=e117]
+          - paragraph [ref=e27]: "0x0000000000000000000000000000000000000000000000000000000000000001"
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - img [ref=e32]
+            - 'heading "Outcome: No" [level=2] [ref=e34]'
+            - paragraph [ref=e35]: March 15
+          - generic [ref=e37]:
+            - generic [ref=e38]: Outcome
+            - generic [ref=e39]:
+              - generic [ref=e40]: 1% yes
+              - text: ·
+              - generic [ref=e41]: 99% no
+          - generic [ref=e45]:
+            - paragraph [ref=e46]: Resolution
+            - paragraph [ref=e47]: Dispute Tracker
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - generic [ref=e51]: ✓
+                - generic [ref=e54]: "Outcome proposed: No"
+              - generic [ref=e55]:
+                - generic [ref=e57]: ⚖
+                - generic [ref=e59]:
+                  - generic [ref=e60]: Dispute window
+                  - generic [ref=e118]: "Bond: 750 USDC"
+              - generic [ref=e66]: "Round 1: Commit-Reveal"
+              - generic [ref=e67]:
+                - generic [ref=e69]: 💬
+                - generic [ref=e72]: Discussion
+              - generic [ref=e78]: "Round 2: Commit-Reveal"
+              - generic [ref=e83]: Final outcome
+        - generic [ref=e89]:
+          - heading "Commit Phase" [level=3] [ref=e91]
+          - generic [ref=e92]:
+            - 'heading "Agent selection: 5/5" [level=4] [ref=e128]':
+              - text: "Agent selection:"
+              - generic [ref=e129]: 5/5
+            - generic [ref=e130]:
+              - heading "Vote Results" [level=5] [ref=e160]
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - generic [ref=e136]: AlphaOracle
+                  - generic [ref=e161]: "YES"
+                - generic [ref=e139]:
+                  - generic [ref=e140]: BetaAnalyst
+                  - generic [ref=e162]: "YES"
+                - generic [ref=e143]:
+                  - generic [ref=e144]: GammaOracle
+                  - generic [ref=e163]: "YES"
+                - generic [ref=e147]:
+                  - generic [ref=e148]: DeltaCritic
+                  - generic [ref=e164]: "YES"
+                - generic [ref=e151]:
+                  - generic [ref=e152]: EpsilonPolicy
+                  - generic [ref=e165]: "YES"
+        - generic [ref=e98]:
+          - heading "Reveal Phase" [level=3] [ref=e100]
+          - generic [ref=e102]:
+            - generic [ref=e167]:
+              - img [ref=e168]
+              - generic [ref=e172]:
+                - generic [ref=e173]: 0 No
+                - generic [ref=e174]: 100 Yes
+            - generic [ref=e175]:
+              - generic [ref=e176]:
+                - img [ref=e178]
+                - generic [ref=e180]: No Consensus
+              - paragraph [ref=e181]: "Round 1: 5/5 voted YES (100%). Need 70% for consensus."
+  - button "Open Next.js Dev Tools" [ref=e112] [cursor=pointer]:
+    - img [ref=e113]
+  - alert [ref=e116]

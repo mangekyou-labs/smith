@@ -1,0 +1,28 @@
+[package]
+name = "confidential_market"
+version = "0.1.0"
+description = "Confidential prediction market with FHE-powered encrypted bet amounts and pool sizes"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "confidential_market"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+
+[dependencies]
+anchor-lang = { version = "1", features = ["init-if-needed", "idl-build"] }
+anchor-spl = { version = "1", features = ["token", "idl-build"] }
+sha2 = { version = "0.10", default-features = false }
+
+# Encrypt FHE stack
+encrypt-types = { path = "../../encrypt-pre-alpha/crates/encrypt-types" }
+encrypt-dsl = { package = "encrypt-solana-dsl", path = "../../encrypt-pre-alpha/chains/solana/program-sdk/dsl" }
+encrypt-anchor = { path = "../../encrypt-pre-alpha/chains/solana/program-sdk/anchor" }
+encrypt-solana-types = { path = "../../encrypt-pre-alpha/chains/solana/program-sdk/types" }

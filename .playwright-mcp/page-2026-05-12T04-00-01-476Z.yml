@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "Market" [ref=e8] [cursor=pointer]:
+          - /url: /market
+      - generic [ref=e10]: DIVE
+      - button "Get Started" [ref=e12]
+    - main [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - heading "All markets" [level=1] [ref=e16]
+          - button "Refresh markets" [disabled] [ref=e17]:
+            - img [ref=e18]
+        - generic [ref=e22]:
+          - button [ref=e23]:
+            - img [ref=e24]
+          - button [ref=e27]:
+            - img [ref=e28]
+          - button [ref=e29]:
+            - img [ref=e30]
+      - generic [ref=e32]:
+        - button "All" [ref=e33]
+        - button "Trump" [ref=e34]
+        - button "NCAA Basketball" [ref=e35]
+        - button "Iran" [ref=e36]
+        - button "Oil" [ref=e37]
+        - button "Hungary Election" [ref=e38]
+        - button "Cuba" [ref=e39]
+        - button "Daily Temperature" [ref=e40]
+        - button "Tweet Markets" [ref=e41]
+        - button "Strait of Hormuz" [ref=e42]
+      - generic [ref=e44]:
+        - generic [ref=e45]: 📊
+        - heading "No markets yet" [level=3] [ref=e46]
+        - paragraph [ref=e47]: Markets will appear here once created on-chain, or check back after the oracle committee resolves active disputes.
+  - button "Open Next.js Dev Tools" [ref=e53] [cursor=pointer]:
+    - img [ref=e54]
+  - alert [ref=e57]

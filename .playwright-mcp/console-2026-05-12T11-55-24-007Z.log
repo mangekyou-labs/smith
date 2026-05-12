@@ -1,0 +1,10 @@
+[     388ms] [LOG] using external VueI18n @ https://www.upwork.com/static/assets/TopNavSsi/visitor-v2/js/main.8c683ad9.js:0
+[     395ms] [LOG] using external VueI18n @ https://www.upwork.com/static/assets/TopNavSsi/visitor-footer/js/main.e7e63b5d.js:0
+[     776ms] [ERROR] A bad HTTP response code (404) was received when fetching the script. @ :0
+[     925ms] [ERROR] Hydration completed but contains mismatches. @ https://www.upwork.com/static/assets/JobDetailsNuxt/_nuxt/entry.egHqm4HH.js:17
+[     972ms] [LOG] SUIT2: Loaded latest asset v0.3.50 for JobDetailsNuxt @ https://www.upwork.com/static/assets/JobDetailsNuxt/_nuxt/entry.egHqm4HH.js:120
+[     974ms] [WARNING] [SUIT]: unexpected key type for (sublocation), expected string got undefined {event: page, label: vs_jobdetails_pageload, data: Object, location: vs_jobdetails, sublocation: undefined} @ https://www.upwork.com/static/suit2-tracker/0.3.50/index.iife.min.js:0
+[     974ms] [WARNING] [SUIT]: unexpected key type for (sublocation), expected string got undefined @ https://www.upwork.com/static/assets/JobDetailsNuxt/_nuxt/entry.egHqm4HH.js:78
+[     975ms] [WARNING] [SUIT]: olog is deprecated, remove it from the trackers array - CI-15888 @ https://www.upwork.com/static/suit2-tracker/0.3.50/index.iife.min.js:0
+[     976ms] [WARNING] [SUIT]: olog is deprecated, remove it from the trackers array - CI-15888 @ https://www.upwork.com/static/assets/JobDetailsNuxt/_nuxt/entry.egHqm4HH.js:78
+[    1609ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://.icg-in.com/favicon.ico:0

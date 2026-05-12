@@ -1,0 +1,3 @@
+[      24ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_buildManifest.js:0
+[      25ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_ssgManifest.js:0
+[      25ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/pao_ilGGO2-Qpl5JQdP7k/_clientMiddlewareManifest.js:0

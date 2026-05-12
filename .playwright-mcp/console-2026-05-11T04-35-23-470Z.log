@@ -1,0 +1,7 @@
+[      31ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/chunks/0btqn2vg_vx9k.css:0
+[      34ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/chunks/turbopack-0xchcm94p4-od.js:0
+[      35ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/chunks/0m-5io8.8kiis.js:0
+[      35ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/chunks/turbopack-0h8_t2o_175jl.js:0
+[      36ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/DH_7QxN4PIgw2o22AY8Tv/_buildManifest.js:0
+[      37ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/DH_7QxN4PIgw2o22AY8Tv/_ssgManifest.js:0
+[      38ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/_next/static/DH_7QxN4PIgw2o22AY8Tv/_clientMiddlewareManifest.js:0

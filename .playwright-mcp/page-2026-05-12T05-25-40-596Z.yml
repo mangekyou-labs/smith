@@ -1,0 +1,127 @@
+- generic:
+  - generic [active]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - navigation [ref=e6]:
+            - button "previous" [disabled] [ref=e7]:
+              - img "previous" [ref=e8]
+            - generic [ref=e10]:
+              - generic [ref=e11]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e12]:
+              - img "next" [ref=e13]
+          - img
+        - generic [ref=e15]:
+          - link "Next.js 16.2.2 (stale) Turbopack" [ref=e16] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e17]
+            - generic "There is a newer version (16.2.6) available, upgrade recommended!" [ref=e19]: Next.js 16.2.2 (stale)
+            - generic [ref=e20]: Turbopack
+          - img
+      - dialog "Build Error" [ref=e22]:
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - generic [ref=e29]: Build Error
+              - generic [ref=e30]:
+                - button "Copy Error Info" [ref=e31] [cursor=pointer]:
+                  - img [ref=e32]
+                - button "No related documentation found" [disabled] [ref=e34]:
+                  - img [ref=e35]
+                - button "Attach Node.js inspector" [ref=e37] [cursor=pointer]:
+                  - img [ref=e38]
+            - generic [ref=e47]: Export getSolanaAgents doesn't exist in target module
+          - generic [ref=e49]:
+            - generic [ref=e51]:
+              - img [ref=e53]
+              - generic [ref=e57]: ./pages/api/commands/solana-resolve.ts (47:1)
+              - button "Open in editor" [ref=e58] [cursor=pointer]:
+                - img [ref=e60]
+            - generic [ref=e63]:
+              - generic [ref=e64]: Export getSolanaAgents doesn't exist in target module
+              - generic [ref=e65]: 45 |
+              - text: import
+              - generic [ref=e66]: "{"
+              - text: Program
+              - generic [ref=e67]: ","
+              - text: AnchorProvider
+              - generic [ref=e68]: ","
+              - text: Wallet
+              - generic [ref=e69]: ","
+              - text: BN
+              - generic [ref=e70]: "}"
+              - text: from "@coral-xyz/anchor"
+              - generic [ref=e71]: ;
+              - generic [ref=e72]: 46 |
+              - text: import
+              - generic [ref=e73]: "{ bs58 }"
+              - text: from "@coral-xyz/anchor/dist/cjs/utils/bytes"
+              - generic [ref=e74]: ;
+              - text: ">"
+              - generic [ref=e75]: 47 |
+              - text: import
+              - generic [ref=e76]: "{"
+              - generic [ref=e77]: "|"
+              - text: ^^^^^^^ >
+              - generic [ref=e78]: 48 |
+              - generic [ref=e79]: getSolanaAgents,
+              - generic [ref=e80]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e81]: 49 |
+              - generic [ref=e82]: getMintedAgents,
+              - generic [ref=e83]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e84]: 50 |
+              - generic [ref=e85]: getBaseUrl,
+              - generic [ref=e86]: "|"
+              - text: ^^^^^^^^^^^^^ >
+              - generic [ref=e87]: 51 |
+              - generic [ref=e88]: callAgent,
+              - generic [ref=e89]: "|"
+              - text: ^^^^^^^^^^^^ >
+              - generic [ref=e90]: 52 |
+              - generic [ref=e91]: getWalletAddress,
+              - generic [ref=e92]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e93]: 53 |
+              - generic [ref=e94]: extractVote,
+              - generic [ref=e95]: "|"
+              - text: ^^^^^^^^^^^^^^ >
+              - generic [ref=e96]: 54 |
+              - generic [ref=e97]: selectCommittee,
+              - generic [ref=e98]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e99]: 55 |
+              - generic [ref=e100]: updateReputation,
+              - generic [ref=e101]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e102]: 56 |
+              - text: type AgentEntry
+              - generic [ref=e103]: ","
+              - generic [ref=e104]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^ >
+              - generic [ref=e105]: 57 |
+              - generic [ref=e106]: "}"
+              - text: from "@/lib/0g-compute"
+              - generic [ref=e107]: ;
+              - generic [ref=e108]: "|"
+              - text: ^^^^^^^^^^^^^^^^^^^^^^^^^^
+              - generic [ref=e109]: 58 |
+              - text: import
+              - generic [ref=e110]: "{"
+              - generic [ref=e111]: 59 |
+              - generic [ref=e112]: generateSolanaSalt,
+              - generic [ref=e113]: 60 |
+              - generic [ref=e114]: computeSolanaCommitHash, The export getSolanaAgents was not found in module [project]/lib/0g-compute.ts [api] (ecmascript). Did you mean to import getMintedAgents? All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+        - generic [ref=e115]: "1"
+        - generic [ref=e116]: "2"
+    - generic [ref=e121] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e122]:
+        - img [ref=e123]
+      - button "Open issues overlay" [ref=e127]:
+        - generic [ref=e128]:
+          - generic [ref=e129]: "0"
+          - generic [ref=e130]: "1"
+        - generic [ref=e131]: Issue
+  - alert [ref=e132]

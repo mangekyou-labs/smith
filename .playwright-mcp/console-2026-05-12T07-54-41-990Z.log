@@ -1,0 +1,251 @@
+[     105ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[     116ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     124ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at ExplorerHome (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__13abmsj._.js:2145:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     125ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at ExplorerHome (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__13abmsj._.js:2145:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooksAgain (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4519:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4470:28)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     126ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at SolanaConnectWallet (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__13abmsj._.js:542:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     126ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at SolanaConnectWallet (http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__13abmsj._.js:542:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooksAgain (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4519:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4470:28)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:72)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1610:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:91)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "wallets" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1604:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:99)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4464:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "publicKey" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1616:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:72)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooksAgain (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4519:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4470:28)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "wallet" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1610:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:91)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooksAgain (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4519:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4470:28)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     127ms] [ERROR] Error: You have tried to read "wallets" on a WalletContext without providing one. Make sure to render a WalletProvider as an ancestor of the component that uses WalletContext.
+    at logMissingProviderError (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1621:19)
+    at Object.get (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1604:9)
+    at useWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1642:99)
+    at BaseWalletMultiButton (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1817:307)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:13800:24)
+    at renderWithHooksAgain (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4519:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:4470:28)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:5917:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:6498:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8894:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8788:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8772:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:8400:186)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9542:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9458:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9479:106)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9553:158 @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[     129ms] [WARNING] Do not add stylesheets using next/head (see <link rel="stylesheet"> tag with href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap"). Use Document instead. 
+See more info here: https://nextjs.org/docs/messages/no-stylesheets-in-head-component @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    1379ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[    3734ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[    7011ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   12336ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   43554ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   45825ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   49098ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   54376ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   85558ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   87755ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   91186ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[   96481ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  127859ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  130101ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  133374ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  138597ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://solana-devnet.g.alchemy.com/v2/SEem2zNMKSjcqvIsS9gm-_Lw9V5_Ckra:0
+[  151654ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://developer.metamask.io/login/register:0
+[  152353ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://developer.metamask.io/api/me:0
+[  152358ms] [INFO] [LaunchDarkly] LaunchDarkly client initialized @ https://developer.metamask.io/_next/static/chunks/pages/_app-5e143c375a19abd4.js:303
+[  152359ms] [INFO] [LaunchDarkly] Opening stream connection to https://clientstream.launchdarkly.com/eval/6449dfe32c088a1338d69a98/eyJhbm9ueW1vdXMiOnRydWUsImtleSI6ImxkLWFub255bW91cy11c2VyLWtleSIsImtpbmQiOiJ1c2VyIn0 @ https://developer.metamask.io/_next/static/chunks/pages/_app-5e143c375a19abd4.js:303
+[  152461ms] [INFO] [LaunchDarkly] Closing stream connection @ https://developer.metamask.io/_next/static/chunks/pages/_app-5e143c375a19abd4.js:303
+[  152461ms] [INFO] [LaunchDarkly] Opening stream connection to https://clientstream.launchdarkly.com/eval/6449dfe32c088a1338d69a98/eyJrZXkiOiJsZC1hbm9ueW1vdXMtdXNlci1rZXkiLCJraW5kIjoidXNlciJ9 @ https://developer.metamask.io/_next/static/chunks/pages/_app-5e143c375a19abd4.js:303
+[  152855ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://developer.metamask.io/login:0
+[  153004ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://developer.metamask.io/favicon.ico:0
+[  153154ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://developer.metamask.io/favicon.ico:0
+[  153856ms] [ERROR] This document requires 'TrustedHTML' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153857ms] [ERROR] This document requires 'TrustedHTML' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153857ms] [ERROR] This document requires 'TrustedScript' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153857ms] [ERROR] This document requires 'TrustedScript' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153857ms] [ERROR] This document requires 'TrustedScriptURL' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153857ms] [ERROR] This document requires 'TrustedScriptURL' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153860ms] [ERROR] Executing inline script violates the following Content Security Policy directive 'script-src 'nonce-bFAuHT67L1T6HJSVhfdJKa' 'unsafe-eval''. Either the 'unsafe-inline' keyword, a hash ('sha256-eJGI0Ik4oYe/PKLDOt4wcN76wYs8h+Ew05pMzdY6xG8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked. @ about:srcdoc:0
+[  153860ms] [ERROR] Executing inline script violates the following Content Security Policy directive 'script-src 'nonce-bFAuHT67L1T6HJSVhfdJKa' 'unsafe-eval''. Either the 'unsafe-inline' keyword, a hash ('sha256-eJGI0Ik4oYe/PKLDOt4wcN76wYs8h+Ew05pMzdY6xG8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked. @ about:srcdoc:0
+[  153860ms] [ERROR] This document requires 'TrustedScript' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153860ms] [ERROR] This document requires 'TrustedScript' assignment. The action has been blocked. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] /.*.*=.*/ @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] /.*.*=.*/ @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] function () { [native code] } @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] function () { [native code] } @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] JSHandle@node @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153978ms] [LOG] JSHandle@node @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [COUNT]  : 1 @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [COUNT]  : 1 @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [DIR]  Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [DIR]  Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [DIRXML] %c%d font-size:0;color:transparent Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [DIRXML] %c%d font-size:0;color:transparent Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [ERROR] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [ERROR] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153979ms] [INFO] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [LOG] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [LOG] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [TABLE] %c%d font-size:0;color:transparent Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [TABLE] %c%d font-size:0;color:transparent Error @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [WARNING] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  153980ms] [WARNING] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154309ms] [WARNING] Failed to parse audio contentType: audio/mp4; codecs=ac-3 @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154309ms] [WARNING] Failed to parse audio contentType: audio/mp4; codecs=ec-3 @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154309ms] [WARNING] Invalid (ambiguous) video codec string: video/webm; codecs=vp9 @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154310ms] [WARNING] Failed to parse video contentType: video/ogg; codecs=theora @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154461ms] [ERROR] Permissions policy violation: xr-spatial-tracking is not allowed in this document. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154461ms] [ERROR] Permissions policy violation: xr-spatial-tracking is not allowed in this document. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154650ms] [LOG] The next request for the Private Access Token challenge may return a 401 and show a warning in console. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0
+[  154684ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/pat/9fa7df269868d4b4/1778572637501/4369e31d672423e40df4b2ae321fa380080b042876147ec8caf73bfc5483d018/hE9xJg6PZnzYu3T:0
+[  154699ms] [WARNING] Form submission canceled because the form is not connected @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/f/ov2/av0/rch/0sfx4/0x4AAAAAAADnPIDROrmt1Wwj/light/fbE/new/normal?lang=auto:0

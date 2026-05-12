@@ -1,0 +1,42 @@
+[     131ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[     138ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     138ms] [WARNING] [HMR] Invalid message: {"type":"isrManifest","data":{"/home":true,"/":true,"/market":true}}
+TypeError: Cannot read properties of undefined (reading 'components')
+    at handleStaticIndicator (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2791:46)
+    at processMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2805:17)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2679:13
+    at WebSocket.handleMessage (http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0pe1dg-._.js:2324:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[     169ms] [WARNING] Do not add stylesheets using next/head (see <link rel="stylesheet"> tag with href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap"). Use Document instead. 
+See more info here: https://nextjs.org/docs/messages/no-stylesheets-in-head-component @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   97757ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   97836ms] [LOG] [Fast Refresh] done in 179ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[   97919ms] [WARNING] THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  101194ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/api/commands/generate-insights:0
+[  101195ms] [ERROR] Failed to fetch insights: SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[  372144ms] [ERROR] WalletNotReadyError
+    at WalletProviderBase.useCallback[handleConnect] (http://localhost:3000/_next/static/chunks/node_modules_%40solana_0bd1k3n._.js:4967:516)
+    at useWalletMultiButton.useCallback[handleConnect] (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1657:13)
+    at onClick (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1880:25)
+    at executeDispatch (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9618:13)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at processDispatchQueue (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9644:41)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9939:13
+    at batchedUpdates$1 (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:2169:44)
+    at dispatchEventForPluginEventSystem (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9720:9)
+    at dispatchEvent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:11919:37)
+    at dispatchDiscreteEvent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:11901:64) PhantomWalletAdapter @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[  372276ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  372279ms] [LOG] [Fast Refresh] done in 104ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  376065ms] [ERROR] WalletNotReadyError
+    at WalletProviderBase.useCallback[handleConnect] (http://localhost:3000/_next/static/chunks/node_modules_%40solana_0bd1k3n._.js:4967:516)
+    at useWalletMultiButton.useCallback[handleConnect] (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1657:13)
+    at onClick (http://localhost:3000/_next/static/chunks/node_modules_11f8h_~._.js:1880:25)
+    at executeDispatch (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9618:13)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:886:74)
+    at processDispatchQueue (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9644:41)
+    at http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9939:13
+    at batchedUpdates$1 (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:2169:44)
+    at dispatchEventForPluginEventSystem (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:9720:9)
+    at dispatchEvent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:11919:37)
+    at dispatchDiscreteEvent (http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:11901:64) PhantomWalletAdapter @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[  378954ms] [LOG] THREE.WebGLRenderer: Context Lost. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226

@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ...req.headers,
       "x-api-key": process.env.INTERNAL_API_KEY ?? "",
     },
-  } as NextApiRequest;
+  } as unknown as NextApiRequest;
 
   const innerRes = {
     status: (code: number) => {
