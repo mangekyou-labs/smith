@@ -73,7 +73,8 @@ function getAssociatedTokenAddress(mint: PublicKey, owner: PublicKey): PublicKey
   );
   return ata;
 }
-import idl from "@/target/idl/smith_oracle.json";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const idl = require("@/lib/solana/smith_oracle.json");
 import { registerMarketPda } from "@/lib/solana/market-index";
 
 const PROGRAM_ID = new PublicKey(

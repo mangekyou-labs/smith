@@ -1,0 +1,1184 @@
+{
+  "address": "BB17yKcbp9qNyokaNPo29gjFK9aYBEH69wpQgiRPZhwz",
+  "metadata": {
+    "name": "confidential_market",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Confidential prediction market with FHE-powered encrypted bet amounts and pool sizes"
+  },
+  "instructions": [
+    {
+      "name": "claim_payout",
+      "docs": [
+        "Claim payout after decryption complete.",
+        "Reads decrypted payout amount, verifies digest, transfers from vault."
+      ],
+      "discriminator": [
+        127,
+        240,
+        132,
+        62,
+        227,
+        198,
+        146,
+        133
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "vault",
+          "docs": [
+            "Vault token account owned by vault PDA"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.market_id",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor_token_account",
+          "writable": true
+        },
+        {
+          "name": "bet_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ]
+          }
+        },
+        {
+          "name": "request_acct"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "commit_vote",
+      "docs": [
+        "Commit an agent vote."
+      ],
+      "discriminator": [
+        134,
+        97,
+        90,
+        126,
+        91,
+        66,
+        16,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "agent"
+        },
+        {
+          "name": "vote_record",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "agent"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "round",
+          "type": "u8"
+        },
+        {
+          "name": "commit_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "vote_ct_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_market",
+      "docs": [
+        "Create a new market with encrypted zero counters for yes/no pools."
+      ],
+      "discriminator": [
+        103,
+        226,
+        97,
+        235,
+        200,
+        188,
+        251,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "market_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "market_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "min_votes",
+          "type": "u16"
+        },
+        {
+          "name": "consensus_bps",
+          "type": "u16"
+        },
+        {
+          "name": "commit_deadline",
+          "type": "i64"
+        },
+        {
+          "name": "reveal_deadline",
+          "type": "i64"
+        },
+        {
+          "name": "initial_yes_pool_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "initial_no_pool_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "place_bet",
+      "docs": [
+        "Place a bet. Frontend encrypts bet amount + vote locally via gRPC createInput.",
+        "CPI into Encrypt executes cast_vote_graph which conditionally increments pools."
+      ],
+      "discriminator": [
+        222,
+        62,
+        67,
+        220,
+        63,
+        166,
+        126,
+        33
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "yes_pool_ct",
+          "writable": true
+        },
+        {
+          "name": "no_pool_ct",
+          "writable": true
+        },
+        {
+          "name": "vote_ct",
+          "writable": true
+        },
+        {
+          "name": "bet_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bettor_token_account",
+          "writable": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "encrypt_program",
+          "docs": [
+            "Encrypt CPI accounts"
+          ]
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "deposit",
+          "writable": true
+        },
+        {
+          "name": "cpi_authority"
+        },
+        {
+          "name": "caller_program"
+        },
+        {
+          "name": "network_encryption_key"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": "u8"
+        },
+        {
+          "name": "bet_ct_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "vote_ct_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "cpi_authority_bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "request_bet_decryption",
+      "docs": [
+        "Bettor requests decryption of their encrypted bet amount.",
+        "Must be called after market is resolved."
+      ],
+      "discriminator": [
+        138,
+        252,
+        89,
+        156,
+        158,
+        97,
+        198,
+        45
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "bet_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ]
+          }
+        },
+        {
+          "name": "request_acct",
+          "writable": true
+        },
+        {
+          "name": "bet_ct"
+        },
+        {
+          "name": "encrypt_program"
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "deposit",
+          "writable": true
+        },
+        {
+          "name": "cpi_authority"
+        },
+        {
+          "name": "caller_program"
+        },
+        {
+          "name": "network_encryption_key"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "bettor",
+          "signer": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "cpi_authority_bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "request_payout_decryption",
+      "docs": [
+        "Request decryption of the FHE-computed payout ciphertext.",
+        "Must be called after the market is resolved and bettor's outcome matches the winner."
+      ],
+      "discriminator": [
+        108,
+        67,
+        146,
+        163,
+        119,
+        170,
+        1,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "bet_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ]
+          }
+        },
+        {
+          "name": "request_acct",
+          "writable": true
+        },
+        {
+          "name": "payout_ct",
+          "writable": true
+        },
+        {
+          "name": "bet_ct"
+        },
+        {
+          "name": "yes_pool_ct"
+        },
+        {
+          "name": "no_pool_ct"
+        },
+        {
+          "name": "encrypt_program"
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "deposit",
+          "writable": true
+        },
+        {
+          "name": "cpi_authority"
+        },
+        {
+          "name": "caller_program"
+        },
+        {
+          "name": "network_encryption_key"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "event_authority"
+        },
+        {
+          "name": "bettor",
+          "signer": true,
+          "relations": [
+            "bet_escrow"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "cpi_authority_bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "resolve_market",
+      "docs": [
+        "Resolve the market after reveal deadline."
+      ],
+      "discriminator": [
+        155,
+        23,
+        80,
+        173,
+        46,
+        74,
+        23,
+        239
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reveal_vote",
+      "docs": [
+        "Reveal a committed vote."
+      ],
+      "discriminator": [
+        100,
+        157,
+        139,
+        17,
+        186,
+        75,
+        185,
+        149
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "relations": [
+            "vote_record"
+          ]
+        },
+        {
+          "name": "agent",
+          "relations": [
+            "vote_record"
+          ]
+        },
+        {
+          "name": "vote_record",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "agent",
+            "vote_record"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": "u8"
+        },
+        {
+          "name": "salt",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Agent",
+      "discriminator": [
+        47,
+        166,
+        112,
+        147,
+        155,
+        197,
+        86,
+        7
+      ]
+    },
+    {
+      "name": "BetEscrow",
+      "discriminator": [
+        212,
+        33,
+        164,
+        43,
+        121,
+        44,
+        43,
+        71
+      ]
+    },
+    {
+      "name": "Market",
+      "discriminator": [
+        219,
+        190,
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    },
+    {
+      "name": "VoteRecord",
+      "discriminator": [
+        112,
+        9,
+        123,
+        165,
+        234,
+        9,
+        157,
+        167
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "TitleTooLong",
+      "msg": "Title exceeds maximum length"
+    },
+    {
+      "code": 6001,
+      "name": "DescriptionTooLong",
+      "msg": "Description exceeds maximum length"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidMinVotes",
+      "msg": "Minimum vote count must be greater than zero"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidConsensusThreshold",
+      "msg": "Consensus threshold must be >50% and <=100%"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidDeadline",
+      "msg": "Invalid commit/reveal deadline configuration"
+    },
+    {
+      "code": 6005,
+      "name": "MarketNotOpen",
+      "msg": "Market is not open"
+    },
+    {
+      "code": 6006,
+      "name": "CommitWindowClosed",
+      "msg": "Commit window is closed"
+    },
+    {
+      "code": 6007,
+      "name": "RevealTooEarly",
+      "msg": "Reveal attempted before commit deadline"
+    },
+    {
+      "code": 6008,
+      "name": "RevealWindowClosed",
+      "msg": "Reveal window is closed"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidOutcome",
+      "msg": "Invalid vote outcome"
+    },
+    {
+      "code": 6010,
+      "name": "AlreadyRevealed",
+      "msg": "Vote has already been revealed"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidReveal",
+      "msg": "Reveal does not match commit hash"
+    },
+    {
+      "code": 6012,
+      "name": "NoConsensus",
+      "msg": "No consensus reached"
+    },
+    {
+      "code": 6013,
+      "name": "MarketNotResolved",
+      "msg": "Market has not been resolved"
+    },
+    {
+      "code": 6014,
+      "name": "ZeroBetAmount",
+      "msg": "Bet amount must be greater than zero"
+    },
+    {
+      "code": 6015,
+      "name": "BettingWindowClosed",
+      "msg": "Betting window is closed"
+    },
+    {
+      "code": 6016,
+      "name": "AlreadyClaimed",
+      "msg": "Payout already claimed"
+    },
+    {
+      "code": 6017,
+      "name": "BetDidNotWin",
+      "msg": "Bet outcome did not match the resolved outcome"
+    },
+    {
+      "code": 6018,
+      "name": "RevealWindowNotClosed",
+      "msg": "Reveal window has not closed yet"
+    },
+    {
+      "code": 6019,
+      "name": "Unauthorized",
+      "msg": "Caller is not authorized"
+    },
+    {
+      "code": 6020,
+      "name": "ZeroCiphertextId",
+      "msg": "Zero ciphertext ID"
+    },
+    {
+      "code": 6021,
+      "name": "DecryptionNotAvailable",
+      "msg": "Decryption not available"
+    },
+    {
+      "code": 6022,
+      "name": "ArithmeticOverflow",
+      "msg": "Arithmetic overflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "Agent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "human_id_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "metadata_uri",
+            "type": "string"
+          },
+          {
+            "name": "registered_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BetEscrow",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "bettor",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": "u8"
+          },
+          {
+            "name": "bet_ct_id",
+            "docs": [
+              "Ciphertext account pubkey for the encrypted bet amount"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          },
+          {
+            "name": "pending_bet_digest",
+            "docs": [
+              "Digest from bet decryption request (for reveal verification)"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "pending_bet_digest_set",
+            "docs": [
+              "Whether a decryption request has been made"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "decrypted_bet_amount",
+            "docs": [
+              "Decrypted bet amount after reveal (u64)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "pending_payout_digest",
+            "docs": [
+              "Digest from payout computation decryption request"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "pending_payout_digest_set",
+            "docs": [
+              "Whether payout decryption has been requested"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "min_votes",
+            "type": "u16"
+          },
+          {
+            "name": "consensus_bps",
+            "type": "u16"
+          },
+          {
+            "name": "commit_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "reveal_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "total_bets",
+            "type": "u64"
+          },
+          {
+            "name": "total_commits",
+            "type": "u32"
+          },
+          {
+            "name": "total_reveals",
+            "type": "u32"
+          },
+          {
+            "name": "yes_reveals",
+            "type": "u32"
+          },
+          {
+            "name": "no_reveals",
+            "type": "u32"
+          },
+          {
+            "name": "resolved_outcome",
+            "type": "u8"
+          },
+          {
+            "name": "yes_pool_ct",
+            "docs": [
+              "Ciphertext account pubkey for encrypted YES pool counter"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "no_pool_ct",
+            "docs": [
+              "Ciphertext account pubkey for encrypted NO pool counter"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "yes_tally_ct",
+            "docs": [
+              "Encrypted tally counters for agent votes"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "no_tally_ct",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "round",
+            "type": "u8"
+          },
+          {
+            "name": "commit_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "vote_ct_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "revealed",
+            "type": "bool"
+          },
+          {
+            "name": "outcome",
+            "type": "u8"
+          },
+          {
+            "name": "salt",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

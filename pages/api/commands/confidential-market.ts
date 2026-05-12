@@ -27,7 +27,8 @@ import {
   ENCRYPT_PROGRAM_ID,
 } from "@/lib/solana/encrypt-grpc";
 
-import conf_idl from "@/target/idl/confidential_market.json";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const conf_idl = require("@/lib/solana/confidential_market.json");
 
 const RPC_URL =
   process.env.SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
