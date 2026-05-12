@@ -8,6 +8,16 @@ interface DisputeResolutionProps {
 // Set NEXT_PUBLIC_NGROK_URL in .env for demo (e.g. https://abc123.ngrok-free.app)
 const API_BASE = process.env.NEXT_PUBLIC_NGROK_URL || "";
 
+interface DisputeApiResponse {
+  success: boolean;
+  votes: { agent: string; vote: string; reasoning: string }[];
+  tally: { YES: number; NO: number };
+  consensus: "YES" | "NO" | null;
+  resolved: boolean;
+  round1?: { tally: { YES: number; NO: number }; reveals: { agent: string; vote: string; reasoning: string }[] };
+  round2?: { tally: { YES: number; NO: number }; reveals: { agent: string; vote: string; reasoning: string }[] };
+}
+
 export default function DisputeResolution({ marketId, question }: DisputeResolutionProps) {
   const [disputeStep, setDisputeStep] = useState(1);
   const [animating, setAnimating] = useState(false);
@@ -25,41 +35,52 @@ export default function DisputeResolution({ marketId, question }: DisputeResolut
     setDisputeStep(2);
 
     try {
-      const resp = await fetch(`${API_BASE}/api/commands/minikit-dispute`, {
+      // Call solana-resolve with skipOnChain=true for prototype dispute flow
+      const resp = await fetch(`${API_BASE}/api/commands/solana-resolve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ marketId, question: question || marketId }),
+        body: JSON.stringify({ marketId, question: question || marketId, skipOnChain: true }),
       });
       const data = await resp.json();
 
-      if (data.error) { setError(data.error); setAnimating(false); return; }
+      if (data.error || !data.success) { setError((data as any).error || "Resolution failed"); setAnimating(false); return; }
+
+      // Map solana-resolve response to DisputeResolution expected shape
+      // solana-resolve: {votes[], tally, consensus, success}
+      // DisputeResolution expects: {round1: {tally, reveals[], ...}, consensus, resolved}
+      const round1Reveals = (data.votes || []).map((v: { agent: string; vote: string; reasoning: string }) => ({
+        agent: v.agent,
+        vote: v.vote,
+        reasoning: v.reasoning,
+      }));
 
       // Show round 1 result
       setDisputeStep(3);
-      const r1 = data.round1;
-      setPhase1Result(`${r1.tally.YES} YES / ${r1.tally.NO} NO`);
-      setAgentViews(r1.reveals);
+      setPhase1Result(`${data.tally.YES} YES / ${data.tally.NO} NO`);
+      setAgentViews(round1Reveals);
 
-      if (data.resolved && !data.round2) {
-        setFinalOutcome(data.consensus);
-        setBondSlashed(data.consensus === "YES");
+      const consensus = data.consensus;
+      if (consensus) {
+        setFinalOutcome(consensus);
+        setBondSlashed(consensus === "YES");
         setDisputeStep(6);
         setAnimating(false);
         return;
       }
 
-      // Show round 2
+      // No consensus — show discussion + round 2 simulation
       await new Promise(r => setTimeout(r, 800));
       setDisputeStep(4);
       await new Promise(r => setTimeout(r, 500));
       setDisputeStep(5);
 
-      const r2 = data.round2;
-      setPhase2Result(`${r2.tally.YES} YES / ${r2.tally.NO} NO`);
-      setAgentViews(r2.reveals);
+      // Round 2: same results for prototype (consensus already tested above)
+      const round2Reveals = round1Reveals;
+      setPhase2Result(`${data.tally.YES} YES / ${data.tally.NO} NO`);
+      setAgentViews(round2Reveals);
 
-      setFinalOutcome(data.consensus);
-      setBondSlashed(data.consensus === "YES");
+      setFinalOutcome(consensus);
+      setBondSlashed(consensus === "YES");
       setDisputeStep(6);
       setAnimating(false);
     } catch {

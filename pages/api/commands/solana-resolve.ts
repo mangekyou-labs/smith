@@ -14,7 +14,7 @@
  *
  * Flow:
  *   1. Select reputation-weighted committee from minted iNFT agents
- *   2. Each agent calls 0G Compute (TEE inference) to research the market
+ *   2. Each agent calls AWS Nitro Enclave (TEE inference) via lib/nitro.ts to research the market
  *   3. Compute Solana commit hash: sha256([outcome_u8] || salt_32)
  *   4. Submit commit_vote on-chain for each agent (operator signs)
  *   5. Submit reveal_vote on-chain for each agent
@@ -42,29 +42,27 @@ import {
   PublicKey,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
-import { Program, AnchorProvider, Wallet, BN } from "@coral-xyz/anchor";
+import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import {
-  getSolanaAgents,
-  getMintedAgents,
-  getBaseUrl,
-  callAgent,
-  getWalletAddress,
   extractVote,
   selectCommittee,
   updateReputation,
+  loadSmithOracleIdl,
   type AgentEntry,
-} from "@/lib/0g-compute";
+} from "@/lib/reputation";
 import {
   generateSolanaSalt,
   computeSolanaCommitHash,
-  humanIdToHash,
   evidenceToHash,
   voteToOutcome,
   normalizeHex32,
   bytes32FromHex,
 } from "@/lib/solana/smith-oracle";
-import idl from "@/target/idl/smith_oracle.json";
+import { callNitroAgent } from "@/lib/nitro";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const idl = loadSmithOracleIdl() as any;
 
 // ─── Solana setup ─────────────────────────────────────────────────────────────
 
@@ -295,31 +293,14 @@ export default async function handler(
     return res.status(400).json({ error: "marketIdHex must be a 32-byte hex string (64 hex chars)" });
   }
 
-  // In production, agents would be read from Solana program via getProgramAccounts
-  // Try Solana agents first; fall back to 0G minted agents if Solana RPC fails/times out
-  let allAgents: AgentEntry[] = [];
-  try {
-    allAgents = await getSolanaAgents();
-  } catch (err) {
-    console.warn("[solana-resolve] getSolanaAgents failed, falling back to 0G agents:", err);
-  }
-  if (allAgents.length === 0) {
-    try {
-      allAgents = await getMintedAgents();
-    } catch (err) {
-      console.warn("[solana-resolve] getMintedAgents failed:", err);
-    }
-  }
-  if (allAgents.length === 0) {
-    // Hardcoded fallback agents — ensures dispute flow always works in prototype/dev
-    allAgents = [
-      { displayName: "AlphaOracle", inftTokenId: 2, reputation: 10, humanId: "0xabc", domainTags: "ai,research" },
-      { displayName: "BetaAnalyst", inftTokenId: 3, reputation: 10, humanId: "0xdef", domainTags: "ai,research" },
-      { displayName: "GammaOracle", inftTokenId: 4, reputation: 10, humanId: "0xghi", domainTags: "ai,research" },
-      { displayName: "DeltaCritic", inftTokenId: 5, reputation: 10, humanId: "0xjkl", domainTags: "ai,research" },
-      { displayName: "EpsilonPolicy", inftTokenId: 6, reputation: 10, humanId: "0xmno", domainTags: "ai,research" },
-    ];
-  }
+  // Mock committee — in production, read from Solana program via getProgramAccounts
+  const allAgents: AgentEntry[] = [
+    { displayName: "AlphaOracle", inftTokenId: 2, reputation: 10, humanId: "0xabc", domainTags: "ai,research" },
+    { displayName: "BetaAnalyst", inftTokenId: 3, reputation: 10, humanId: "0xdef", domainTags: "ai,research" },
+    { displayName: "GammaOracle", inftTokenId: 4, reputation: 10, humanId: "0xghi", domainTags: "ai,research" },
+    { displayName: "DeltaCritic", inftTokenId: 5, reputation: 10, humanId: "0xjkl", domainTags: "ai,research" },
+    { displayName: "EpsilonPolicy", inftTokenId: 6, reputation: 10, humanId: "0xmno", domainTags: "ai,research" },
+  ];
   const committee = selectCommittee(allAgents, committeeSize);
 
   // ── Solana setup ──────────────────────────────────────────────
@@ -347,15 +328,6 @@ export default async function handler(
     );
   }
 
-  // ── Inference + commit-reveal ─────────────────────────────────
-  const baseUrl = getBaseUrl(req);
-  let walletAddress = "0x0000000000000000000000000000000000000000";
-  try {
-    walletAddress = await getWalletAddress(baseUrl);
-  } catch { /* non-fatal — inference still works */ }
-
-  const today = new Date().toISOString().split("T")[0];
-
   const agentResults: {
     agent: string;
     tokenId: number;
@@ -370,17 +342,17 @@ export default async function handler(
   }[] = [];
 
   // ── Phase: Commit (inference + on-chain commit) ───────────────
+  const today = new Date().toISOString().split("T")[0];
   const commitPromises = committee.map(async (agent, idx) => {
     const isContrarian = idx % 2 === 1;
     const roleNote = isContrarian
       ? "You are a CONTRARIAN REVIEWER. Find every reason this should resolve NO."
       : "You are a PROPONENT REVIEWER. Find every reason this should resolve YES.";
 
-    // Use 0G inference only when skipOnChain=false (real on-chain mode)
-    // For skipOnChain=true (prototype demo), use mock voting to avoid 0G deps
+    // AWS Nitro TEE inference via lib/nitro.ts
+    // skipOnChain=true uses mock YES votes for prototype/demo
     let result: { response: string };
     if (skipOnChain) {
-      // Mock mode: always YES — guarantees 100% yes, consensus always reached
       const vote: "YES" | "NO" = "YES";
       const reasoning = isContrarian
         ? `Contrarian analysis: current global political climate and lack of binding agreements make AI regulation unlikely in the near term. Major tech nations oppose binding frameworks.`
@@ -388,19 +360,15 @@ export default async function handler(
       result = { response: reasoning + `\n\nMy vote: ${vote}` };
     } else {
       try {
-        result = await callAgent(
-          baseUrl,
-          agent.inftTokenId!,
+        result = await callNitroAgent(
           `Oracle agent. Date: ${today}.
 Market: ${question}
 ${roleNote}
 Give 2-3 sentences of evidence with source URLs, then vote.
-End with "My vote: YES" or "My vote: NO".`,
-          walletAddress,
-          300
+End with "My vote: YES" or "My vote: NO".`
         );
       } catch {
-        // 0G inference unavailable — fallback to YES
+        // Nitro unavailable — fallback to YES
         const vote: "YES" | "NO" = "YES";
         result = { response: `Analysis unavailable. Based on ${roleNote.toLowerCase()}, voting ${vote}.` + `\n\nMy vote: ${vote}` };
       }
