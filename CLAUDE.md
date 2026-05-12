@@ -72,7 +72,7 @@ Mock FHE ciphertext format: `[1 byte fhe_type || 16 bytes little-endian value]` 
 | `lib/solana/useTransactions.ts` | `usePlaceBet()` (returns `BetTxResult`), `useClaimPayout()` |
 | `lib/solana/encrypt-grpc.ts` | FHE mock helpers: `encryptValue`, `bytesToHex`, `FHE_BOOL=0`, `FHE_UINT64=4`, `CONFIDENTIAL_MARKET_PROGRAM_ID` |
 | `lib/nitro.ts` | `callNitroAgent(prompt)` — calls AWS Nitro enclave HTTP endpoint, returns `{response, attestation_document, hash}`. Also exports `extractVote(text)`, `hashResponse(text)`. |
-| `lib/reputation.ts` | `selectCommittee()`, `updateReputation()`, `extractVote()`, `generateSolanaSalt()`, `loadSmithOracleIdl()`. Pure local functions — no external API dependencies. |
+| `lib/reputation.ts` | `selectCommittee()`, `updateReputation()`, `extractVote()`, `generateSolanaSalt()`. Pure local functions — no external API dependencies. |
 
 ### API routes
 

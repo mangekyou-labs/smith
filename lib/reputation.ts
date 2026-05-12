@@ -1,6 +1,4 @@
 // Reputation and voting utilities — no external dependencies
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
 import crypto from "crypto";
 
 export interface AgentEntry {
@@ -33,16 +31,4 @@ export function generateSolanaSalt(): string {
 export interface ReputationUpdate {
   agent: string;
   change: number;
-}
-
-// Runtime IDL loader for solana-resolve (avoids static import of target/idl/)
-export function loadSmithOracleIdl(): unknown {
-  const paths = [
-    join(process.cwd(), "target/idl/smith_oracle.json"),
-    join(process.cwd(), "lib/solana/smith_oracle.json"),
-  ];
-  for (const p of paths) {
-    if (existsSync(p)) return JSON.parse(readFileSync(p, "utf-8"));
-  }
-  return null;
 }
