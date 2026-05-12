@@ -9,7 +9,8 @@ Smith is a Solana-native prediction market powered by AI agent oracles running i
 ## Stack
 
 - **Solana Devnet** — Anchor program (`smith_oracle`, module `dive_oracle`) for market accounts, vault escrow, voting, TEE attestation verification
-- **AWS Nitro Enclaves** — TEE environment running Gemini inference; returns `{response, attestation_document}` where the document is CBOR-encoded with PCR0/PCR1 + certificate chain
+- **AWS Nitro Enclaves** — TEE environment for production inference; returns `{response, attestation_document}` where the document is CBOR-encoded with PCR0/PCR1 + certificate chain. Currently a standalone endpoint (`lib/nitro.ts`); production integration via `solana-resolve` is pending.
+- **0G ServingBroker** (`@0glabs/0g-serving-broker`) — active inference layer used by `solana-resolve`. Wrapped by `lib/0g-compute.ts` with `callAgent()`.
 - **Next.js** (Pages Router) — Frontend with `@solana/wallet-adapter-react`; API routes for operator commands
 - **Rust** — `programs/smith-oracle/` (Anchor), `programs/confidential-market/` (FHE, integrated via `confidentialMode` toggle in PlaceBetModal)
 
@@ -20,8 +21,8 @@ Smith is a Solana-native prediction market powered by AI agent oracles running i
 npm run dev          # Start dev server on localhost:3000
 npm run build        # Production build
 
-# TypeScript check (errors in encrypt-pre-alpha/ and legacy EVM pages OK to ignore)
-npx tsc --noEmit 2>&1 | grep -v "encrypt-pre-alpha" | grep -v "ConnectWallet\|MyPositions\|PredictionMarket\|claw\|inft\|minikit"
+# TypeScript check (errors in encrypt-pre-alpha/ and programs/ OK to ignore — excluded in tsconfig.json)
+npx tsc --noEmit 2>&1 | grep -v "encrypt-pre-alpha" | grep -v "programs/"
 
 # Solana Anchor programs
 anchor build
@@ -52,6 +53,7 @@ App
 - **`PlaceBetModal`** — renders nothing when `open=false` (wrapper pattern). This prevents `useWallet()` from being called when modal is closed, which would throw without a provider. Hooks only run when `open=true`. Supports `confidentialMode` prop for encrypted betting.
 - **`usePlaceBet(onSubmitted?)`** — accepts optional `onSubmitted` callback that fires when the transaction is submitted (before confirmation). Returns `BetTxResult` with `{ signature, state, error }`.
 - **`useMarkets()`** — React Query wrapper around `getProgramAccounts` scanner. Caches for 30s.
+- **`DisputeResolution`** (`components/DisputeResolution.tsx`) — dispute UI component. Calls `POST /api/commands/minikit-dispute` to run a 5-agent committee in `skipOnChain=true` mode. Used by `pages/dispute.tsx`. Returns `{ round1: { tally, reveals }, resolved, consensus }`.
 
 ### Confidential (FHE) Betting UX
 
@@ -77,9 +79,9 @@ Mock FHE ciphertext format: `[1 byte fhe_type || 16 bytes little-endian value]` 
 | `lib/solana/smith-oracle.ts` | PDA seeds (`vaultSeeds`, `betEscrowSeeds`), payout math, `SolanaOutcome` constants |
 | `lib/solana/useMarkets.ts` | React Query hook for market list |
 | `lib/solana/useTransactions.ts` | `usePlaceBet()` (returns `BetTxResult`), `useClaimPayout()` |
-| `lib/solana/useBet.ts` | Separate hook — unused, likely legacy |
 | `lib/solana/encrypt-grpc.ts` | FHE mock helpers: `encryptValue`, `bytesToHex`, `FHE_BOOL=0`, `FHE_UINT64=4`, `CONFIDENTIAL_MARKET_PROGRAM_ID` |
-| `lib/nitro.ts` | `callNitroAgent(prompt)` — calls Nitro enclave HTTP endpoint, returns `{response, attestation_document, hash}` |
+| `lib/nitro.ts` | `callNitroAgent(prompt)` — calls Nitro enclave HTTP endpoint, returns `{response, attestation_document, hash}`. Also exports `extractVote(text)`, `hashResponse(text)`. Standalone endpoint — not yet wired into `solana-resolve` flow. |
+| `lib/0g-compute.ts` | 0G ServingBroker wrapper: `callAgent()`, `selectCommittee()`, `extractVote()`, `generateSolanaSalt()`, `updateReputation()`, `getSolanaAgents()`, `getMintedAgents()`. Uses `ZGComputeNetworkBroker` from `@0glabs/0g-serving-broker`. Falls back to mock agents when on-chain agent list is empty |
 
 ### API routes
 
@@ -87,7 +89,10 @@ Mock FHE ciphertext format: `[1 byte fhe_type || 16 bytes little-endian value]` 
 |---|---|---|
 | `POST /api/commands/solana-bridge` | `x-api-key: INTERNAL_API_KEY` | Operator write API: `register_agent`, `create_market`, `place_bet`, `claim_payout` |
 | `POST /api/commands/confidential-market` | `x-api-key: INTERNAL_API_KEY` | Confidential bet API: encrypts bet via FHE mock (pre-alpha) then submits to `confidential_market` program. Actions: `place_bet` |
-| `POST /api/commands/solana-resolve` | `INTERNAL_API_KEY` env var required | Oracle automation: calls Nitro enclave → `commit_vote` → `reveal_vote` → `resolve_market` → `settle_reputation`. Has `skipOnChain=true` mode for offline demos. |
+| `POST /api/commands/solana-resolve` | `INTERNAL_API_KEY` env var | Oracle automation: calls 0G ServingBroker via `callAgent()` → `commit_vote` → `reveal_vote` → `resolve_market` → `settle_reputation`. Has `skipOnChain=true` mode for offline demos. |
+| `POST /api/commands/minikit-dispute` | (internal only) | Thin proxy to `solana-resolve` for dispute UI. Reformats response to `DisputeResolution` component shape: `{ round1: { tally, reveals }, consensus, resolved }` |
+| `POST /api/commands/generate-insights` | (stub) | Returns `{ wordCloud: [], references: [] }`. Prevents `fetchInsights` crash when OpenAI is unavailable |
+| `GET /api/markets` | none | Returns market list. Falls back to 6 devnet fixture markets when no real on-chain markets exist |
 
 ## On-chain Program
 
@@ -116,8 +121,8 @@ Program ID (devnet): `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx`
 
 ### TEE Oracle flow
 
-1. `solana-resolve.ts` calls `callNitroAgent(prompt)` → Nitro enclave runs Gemini → returns `{response, attestation_document, hash}`
-2. `attestation_document` (base64 CBOR) → on-chain `verify_attestation` instruction → CBOR-decoded, PCR0/1 verified, nonce = `sha256(market_id || agent_authority || round)` checked, `AttestationRecord` stored
+1. `solana-resolve.ts` calls `callAgent()` from `lib/0g-compute` → 0G ServingBroker (Galileo/TEE inference) → returns LLM verdict with evidence
+2. In production: `lib/nitro.ts` `callNitroAgent()` calls Nitro enclave for TEE-attested inference (currently a standalone endpoint; not wired into `solana-resolve` yet)
 3. Standard commit-reveal: `commit_hash = sha256([outcome_u8] || salt_32)` → `commit_vote` → `reveal_vote` → `resolve_market` → `settle_reputation`
 4. Reputation: correct `+10`, wrong `−5` (floor 0)
 
@@ -156,6 +161,7 @@ NEXT_PUBLIC_DEVNET_USDC_MINT=...      # Devnet USDC mint for betting (placeholde
 - **Nitro enclave endpoint unauthenticated** — `NITRO_ENCLAVE_ENDPOINT` must be network-isolated (private VPC). Enclave unavailability fail-closes (503), not silent fallback.
 - **Single operator wallet** — one key controls all agent actions. Per-agent keypairs needed before mainnet with real TVL.
 - **`encrypt-pre-alpha/` excluded** — separate Rust workspace, `tsconfig.json` exclude pattern. Build separately.
+- **EVM-era stubs** — `lib/prediction-market.ts`, `lib/sparkinft-abi.ts`, `lib/wagmi.ts`, `lib/contracts.ts`, `components/ConnectWallet.tsx` are deprecated stubs kept only to satisfy imports from legacy EVM-era pages (now excluded from type-checking). Do not use these in new code.
 
 ## Security Notes
 
