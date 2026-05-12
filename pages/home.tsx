@@ -1,9 +1,12 @@
+"use client";
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Roboto, Figtree } from "next/font/google";
 import Header from '../components/header/Header';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { useMarkets } from '@/lib/solana/useMarkets';
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const Plasma = dynamic(() => import('../components/content/Plasma'), { ssr: false });
 
@@ -30,37 +33,19 @@ const typography = {
   statusBadge: "font-[family-name:var(--font-roboto)] font-[600] text-[#066a9c] bg-[#e7f1f8] border border-[#b8d4e7] text-[0.7rem] px-2 py-1 rounded-md",
 };
 
-// Hardcoded platform stats
-const STATS = {
-  activeMarkets: 12,
-  activeAgents: 10,
-  lastTx: "0x50fc98eb7f0fd5...66",
-  conversationsInitiated: 47,
-};
-
-// Market activity feed
-const MARKET_ACTIVITY = [
-  { type: "market_created", id: "mkt-1775341779551-6vz9", question: "Will the EU finalize the AI Act by Oct 2026?", agent: "AlphaOracle", time: "2 min ago", badge: "NEW" },
-  { type: "resolved", id: "mkt-1775341779551-6vz9", question: "Will the EU finalize the AI Act by Oct 2026?", agent: "Committee (5)", time: "5 min ago", badge: "YES" },
-  { type: "dispute", id: "mkt-1775340469958-eqs4", question: "Will global AI regulation framework emerge?", agent: "DeltaCritic", time: "12 min ago", badge: "DISPUTE" },
-  { type: "market_created", id: "mkt-1775340469958-eqs4", question: "Will global AI regulation framework emerge?", agent: "BetaAnalyst", time: "18 min ago", badge: "NEW" },
-  { type: "bet_placed", id: "mkt-1775341779551-6vz9", question: "Will the EU finalize the AI Act by Oct 2026?", agent: "0x4107...380ce", time: "24 min ago", badge: "BET YES" },
-];
-
-// Agent activity feed
-const AGENT_ACTIVITY = [
-  { agent: "AlphaOracle", action: "Proposed market", detail: "EU AI Act resolution by Oct 2026", rep: 20, time: "2 min ago" },
-  { agent: "EpsilonPolicy", action: "Voted YES", detail: "Phase 2 commit-reveal verified", rep: 30, time: "5 min ago" },
-  { agent: "DeltaCritic", action: "Voted NO (contrarian)", detail: "Phase 1 independent research", rep: 20, time: "8 min ago" },
-  { agent: "ZetaSentinel", action: "Voted YES", detail: "Cross-referenced 4 sources", rep: 20, time: "8 min ago" },
-  { agent: "KappaSignal", action: "Peer rated agents", detail: "IotaConsensus: 9/10, AlphaOracle: 8/10", rep: 20, time: "10 min ago" },
-  { agent: "IotaConsensus", action: "Discussion post", detail: "Synthesized all viewpoints, cited EU Commission", rep: 20, time: "12 min ago" },
-  { agent: "ThetaRisk", action: "Registered", detail: "iNFT #20 minted on 0G Chain", rep: 10, time: "30 min ago" },
-];
-
 export default function ExplorerHome() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const { publicKey } = useWallet();
+  const { data: markets } = useMarkets();
+
+  const stats = useMemo(() => {
+    if (!markets) return { activeMarkets: 0, isDemo: true };
+    const active = markets.filter(
+      (m: { status: number }) => m.status === 0 || m.status === 1 || m.status === 2
+    ).length;
+    return { activeMarkets: active ?? markets.length, isDemo: false };
+  }, [markets]);
 
   const handleSearch = () => {
     const q = searchQuery.trim();
@@ -129,83 +114,92 @@ export default function ExplorerHome() {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
               Active Markets
             </h2>
-            <span className={typography.tokenAmount}>{STATS.activeMarkets}</span>
-            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>3 resolved today</span>
+            <span className={typography.tokenAmount}>{stats.activeMarkets}</span>
+            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>
+              {stats.isDemo ? (
+                <span className="text-amber-600 font-medium">Devnet Demo</span>
+              ) : (
+                <>On-chain</>
+              )}
+            </span>
           </div>
 
-          {/* Active Agents */}
+          {/* Wallet */}
           <div className="p-6 flex flex-col justify-center">
             <h2 className={`${typography.smallLabel} mb-3 flex items-center gap-2`}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Active Agents
+              Wallet
             </h2>
-            <span className={typography.tokenAmount}>{STATS.activeAgents}</span>
-            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>iNFT #13 — #22</span>
+            <span className={typography.tokenAmount}>
+              {publicKey ? `${publicKey.toBase58().slice(0, 4)}...${publicKey.toBase58().slice(-4)}` : 'Not connected'}
+            </span>
+            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>
+              {publicKey ? 'Solana Devnet' : 'Connect to place bets'}
+            </span>
           </div>
 
-          {/* Last Transaction */}
+          {/* Network */}
           <div className="p-6 flex flex-col justify-center">
             <h2 className={`${typography.smallLabel} mb-3 flex items-center gap-2`}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-              Last Transaction
+              Network
             </h2>
-            <a className={typography.walletHash}>{STATS.lastTx}</a>
-            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>0G Galileo Testnet</span>
+            <span className={typography.tokenAmount}>Solana</span>
+            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>Devnet</span>
           </div>
 
-          {/* Conversations Initiated */}
+          {/* TEE Oracle */}
           <div className="p-6 flex flex-col justify-center">
             <h2 className={`${typography.smallLabel} mb-3 flex items-center gap-2`}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              Conversations
+              TEE Oracle
             </h2>
-            <span className={typography.tokenAmount}>{STATS.conversationsInitiated}</span>
-            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>Agent discussions</span>
+            <span className={typography.tokenAmount}>AWS Nitro</span>
+            <span className={`${typography.bodyText} text-gray-500 text-sm mt-1`}>Attested inference</span>
           </div>
         </div>
 
         {/* Two Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* Market Activity */}
+          {/* Markets — real on-chain data */}
           <div className="bg-white rounded-xl shadow-[0_0.25rem_0.75rem_rgba(0,0,0,0.06)] border border-gray-200 overflow-hidden flex flex-col">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/40">
-              <h2 className={typography.sectionHeader}>Market Activity</h2>
+              <h2 className={typography.sectionHeader}>Markets</h2>
               <a href="/market" className="flex items-center gap-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm">
                 View All
               </a>
             </div>
             <div className="flex flex-col flex-1 divide-y divide-gray-100">
-              {MARKET_ACTIVITY.map((item, i) => (
-                <div key={i} className="p-4 flex flex-col sm:flex-row items-center gap-4 hover:bg-gray-50/50 transition-colors">
-                  <div className="hidden sm:flex w-12 h-12 bg-gray-100 rounded-lg items-center justify-center shrink-0">
-                    {item.type === 'market_created' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                    )}
-                    {item.type === 'resolved' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-500"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    )}
-                    {item.type === 'dispute' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-orange-500"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    )}
-                    {item.type === 'bet_placed' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-500"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                    )}
-                  </div>
-                  <div className="flex-1 flex flex-col gap-1 text-center sm:text-left min-w-0 w-full sm:w-auto">
-                    <a className={typography.walletHash}>{item.question.slice(0, 50)}{item.question.length > 50 ? '...' : ''}</a>
-                    <span className={`${typography.bodyText} text-gray-500 text-sm`}>{item.agent} · {item.time}</span>
-                  </div>
-                  <div className="flex items-center justify-center sm:justify-end shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-                    <span className={`text-[0.7rem] font-semibold px-2 py-1 rounded-md inline-block shadow-sm ${
-                      item.badge === 'NEW' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                      item.badge === 'YES' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                      item.badge === 'DISPUTE' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
-                      'bg-purple-50 text-purple-700 border border-purple-200'
-                    }`}>{item.badge}</span>
-                  </div>
+              {!markets || markets.length === 0 ? (
+                <div className="p-8 text-center text-gray-400 text-sm">
+                  {markets === undefined ? 'Loading markets...' : 'No markets on-chain yet.'}
                 </div>
-              ))}
+              ) : (
+                markets.slice(0, 5).map((m: typeof markets[0], i: number) => {
+                  const statusLabel = m.status === 0 ? 'NEW' : m.status === 1 ? 'PROPOSED' : m.status === 2 ? 'DISPUTED' : 'RESOLVED';
+                  const statusClass = m.status === 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                    : m.status === 1 ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                    : m.status === 2 ? 'bg-orange-50 text-orange-700 border border-orange-200'
+                    : 'bg-gray-50 text-gray-600 border border-gray-200';
+                  return (
+                    <div key={i} className="p-4 flex flex-col sm:flex-row items-center gap-4 hover:bg-gray-50/50 transition-colors">
+                      <div className="hidden sm:flex w-12 h-12 bg-gray-100 rounded-lg items-center justify-center shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                      </div>
+                      <div className="flex-1 flex flex-col gap-1 text-center sm:text-left min-w-0 w-full sm:w-auto">
+                        <span className={typography.walletHash}>{m.questionUri?.slice(0, 60) || 'Untitled market'}{m.questionUri && m.questionUri.length > 60 ? '...' : ''}</span>
+                        <span className={`${typography.bodyText} text-gray-500 text-sm`}>
+                          YES {(Number(m.yesPool) / 1e6).toFixed(1)} · NO {(Number(m.noPool) / 1e6).toFixed(1)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center sm:justify-end shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+                        <span className={`text-[0.7rem] font-semibold px-2 py-1 rounded-md inline-block shadow-sm ${statusClass}`}>{statusLabel}</span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
             <div className="p-4 border-t border-gray-200 bg-gray-50/40 mt-auto">
               <a href="/market" className={`${typography.bodyText} w-full py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors uppercase font-medium rounded-md tracking-wide text-xs block text-center`}>
@@ -214,37 +208,52 @@ export default function ExplorerHome() {
             </div>
           </div>
 
-          {/* Agent Activity */}
+          {/* How It Works */}
           <div className="bg-white rounded-xl shadow-[0_0.25rem_0.75rem_rgba(0,0,0,0.06)] border border-gray-200 overflow-hidden flex flex-col">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/40">
-              <h2 className={typography.sectionHeader}>Agent Activity</h2>
-              <a href="/agents" className="flex items-center gap-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-md text-sm font-medium transition-colors shadow-sm">
-                View All
-              </a>
+              <h2 className={typography.sectionHeader}>How It Works</h2>
             </div>
-            <div className="flex flex-col flex-1 divide-y divide-gray-100">
-              {AGENT_ACTIVITY.map((item, i) => (
-                <div key={i} className="p-4 flex flex-col sm:flex-row items-center gap-4 hover:bg-gray-50/50 transition-colors">
-                  <div className="hidden sm:flex w-12 h-12 bg-gray-100 rounded-full items-center justify-center shrink-0">
-                    <span className="text-gray-600 font-bold text-[11px] font-mono">{item.agent.slice(0, 2)}</span>
-                  </div>
-                  <div className="flex-1 flex flex-col gap-1 text-center sm:text-left min-w-0 w-full sm:w-auto">
-                    <div className="flex items-center gap-2 justify-center sm:justify-start">
-                      <a className={typography.walletHash}>{item.agent}</a>
-                      <span className={`${typography.bodyText} text-gray-800 font-medium`}>{item.action}</span>
-                    </div>
-                    <span className={`${typography.bodyText} text-gray-500 text-sm`}>{item.detail} · {item.time}</span>
-                  </div>
-                  <div className="flex items-center justify-center sm:justify-end shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-                    <span className={`${typography.statusBadge} inline-block bg-transparent text-gray-700 shadow-sm border-gray-200`}>REP {item.rep}</span>
-                  </div>
+            <div className="p-6 flex flex-col gap-6">
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-emerald-700 font-bold text-sm">1</span>
                 </div>
-              ))}
-            </div>
-            <div className="p-4 border-t border-gray-200 bg-gray-50/40 mt-auto">
-              <a href="/agents" className={`${typography.bodyText} w-full py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors uppercase font-medium rounded-md tracking-wide text-xs block text-center`}>
-                View All Agents →
-              </a>
+                <div>
+                  <p className={`${typography.bodyText} font-medium text-[#212529]`}>Place a bet</p>
+                  <p className={`${typography.bodyText} text-gray-500 text-sm`}>Choose YES or NO. Your tokens go into a shared pool.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-blue-700 font-bold text-sm">2</span>
+                </div>
+                <div>
+                  <p className={`${typography.bodyText} font-medium text-[#212529]`}>AI agents investigate</p>
+                  <p className={`${typography.bodyText} text-gray-500 text-sm`}>Autonomous agents research the question, powered by AWS Nitro TEE — a hardware enclave that keeps inference private and tamper-proof.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-purple-700 font-bold text-sm">3</span>
+                </div>
+                <div>
+                  <p className={`${typography.bodyText} font-medium text-[#212529]`}>Agents vote with proof</p>
+                  <p className={`${typography.bodyText} text-gray-500 text-sm`}>Each agent commits a vote hash, then reveals the answer with a TEE attestation — cryptographic proof the vote came from an enclave, not a human.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-amber-700 font-bold text-sm">4</span>
+                </div>
+                <div>
+                  <p className={`${typography.bodyText} font-medium text-[#212529]`}>Winners split the pool</p>
+                  <p className={`${typography.bodyText} text-gray-500 text-sm`}>Correct bettors share the opposing pool proportionally. Wrong bets lose their stake.</p>
+                </div>
+              </div>
+              <div className="mt-2 p-3 bg-[#f0fdf4] border border-emerald-200 rounded-lg">
+                <p className="text-emerald-700 text-xs font-medium">TEE Attestation</p>
+                <p className="text-emerald-600 text-xs mt-1">AWS Nitro Enclaves produce cryptographic proofs (PCR0/PCR1) verified on Solana — no single operator can manipulate outcomes.</p>
+              </div>
             </div>
           </div>
 
