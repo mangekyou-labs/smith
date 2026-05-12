@@ -1,21 +1,9 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { BorshCoder } from "@coral-xyz/anchor";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
 
-// IDL loaded at runtime to avoid static import of files excluded from Vercel build
-function loadIdl(): unknown {
-  const paths = [
-    join(process.cwd(), "target/idl/smith_oracle.json"),
-    join(process.cwd(), "lib/solana/smith_oracle.json"),
-  ];
-  for (const p of paths) {
-    if (existsSync(p)) return JSON.parse(readFileSync(p, "utf-8"));
-  }
-  return null;
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const idl = loadIdl() as any;
+// IDL loaded at build time via require — smith_oracle.json is committed to lib/solana/
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const idl = require("./smith_oracle.json");
 
 const PROGRAM_ID =
   process.env.NEXT_PUBLIC_SMITH_ORACLE_PROGRAM_ID ??
