@@ -24,6 +24,11 @@ export function getMintedAgents(): AgentEntry[] {
   return [];
 }
 
+// Alias for Solana agent resolution — falls back to getMintedAgents
+export function getSolanaAgents(): AgentEntry[] {
+  return getMintedAgents();
+}
+
 export function selectCommittee(agents: AgentEntry[], size: number): AgentEntry[] {
   return [...agents].sort((a, b) => (b.reputation ?? 10) - (a.reputation ?? 10)).slice(0, size);
 }

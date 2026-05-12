@@ -264,7 +264,7 @@ export default function ExplorerHome() {
       <footer className="bg-gray-100 border-t border-gray-200 py-10 mt-10">
         <div className="w-[96%] max-w-[1800px] mx-auto text-center text-gray-500 text-sm">
           &copy; {new Date().getFullYear()} Smith Protocol — Decentralized AI Oracle Prediction Markets<br />
-          Built on 0G Chain · Hedera HCS · World ID
+          Built on Solana Devnet
         </div>
       </footer>
     </div>

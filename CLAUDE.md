@@ -11,7 +11,7 @@ Smith is a Solana-native prediction market powered by AI agent oracles running i
 - **Solana Devnet** — Anchor program (`smith_oracle`, module `dive_oracle`) for market accounts, vault escrow, voting, TEE attestation verification
 - **AWS Nitro Enclaves** — TEE environment running Gemini inference; returns `{response, attestation_document}` where the document is CBOR-encoded with PCR0/PCR1 + certificate chain
 - **Next.js** (Pages Router) — Frontend with `@solana/wallet-adapter-react`; API routes for operator commands
-- **Rust** — `programs/smith-oracle/` (Anchor), `programs/confidential-market/` (FHE, separate workspace, not integrated)
+- **Rust** — `programs/smith-oracle/` (Anchor), `programs/confidential-market/` (FHE, integrated via `confidentialMode` toggle in PlaceBetModal)
 
 ## Build Commands
 
@@ -49,9 +49,24 @@ App
 
 ### Key frontend patterns
 
-- **`PlaceBetModal`** — renders nothing when `open=false` (wrapper pattern). This prevents `useWallet()` from being called when modal is closed, which would throw without a provider. Hooks only run when `open=true`.
+- **`PlaceBetModal`** — renders nothing when `open=false` (wrapper pattern). This prevents `useWallet()` from being called when modal is closed, which would throw without a provider. Hooks only run when `open=true`. Supports `confidentialMode` prop for encrypted betting.
 - **`usePlaceBet(onSubmitted?)`** — accepts optional `onSubmitted` callback that fires when the transaction is submitted (before confirmation). Returns `BetTxResult` with `{ signature, state, error }`.
 - **`useMarkets()`** — React Query wrapper around `getProgramAccounts` scanner. Caches for 30s.
+
+### Confidential (FHE) Betting UX
+
+Encrypted betting is integrated into the existing `PlaceBetModal` flow via a toggle:
+
+1. User on `/market` → clicks YES/NO on a market card → `PlaceBetModal` opens
+2. Modal has `[ Regular ] [ Confidential ✦ ]` toggle pills in the header
+3. When Confidential is active:
+   - Button label changes to "Encrypt Bet" (indigo)
+   - `POST /api/commands/confidential-market` with `action=place_bet` — server-side operator key signs and submits to `confidential_market` program
+   - Mock encryption preview shown inline: hex display of `EBool` (vote) and `EUint64` (amount) ciphertexts
+   - Pre-alpha disclaimer: "Encryption is mocked — all data stored publicly on-chain"
+4. Same `txState` feedback loop: pending → confirmed (or error)
+
+Mock FHE ciphertext format: `[1 byte fhe_type || 16 bytes little-endian value]` (17 bytes total). Types: `FHE_BOOL=0`, `FHE_UINT64=4`.
 
 ### Solana lib files
 
@@ -63,6 +78,7 @@ App
 | `lib/solana/useMarkets.ts` | React Query hook for market list |
 | `lib/solana/useTransactions.ts` | `usePlaceBet()` (returns `BetTxResult`), `useClaimPayout()` |
 | `lib/solana/useBet.ts` | Separate hook — unused, likely legacy |
+| `lib/solana/encrypt-grpc.ts` | FHE mock helpers: `encryptValue`, `bytesToHex`, `FHE_BOOL=0`, `FHE_UINT64=4`, `CONFIDENTIAL_MARKET_PROGRAM_ID` |
 | `lib/nitro.ts` | `callNitroAgent(prompt)` — calls Nitro enclave HTTP endpoint, returns `{response, attestation_document, hash}` |
 
 ### API routes
@@ -70,6 +86,7 @@ App
 | Route | Auth | Purpose |
 |---|---|---|
 | `POST /api/commands/solana-bridge` | `x-api-key: INTERNAL_API_KEY` | Operator write API: `register_agent`, `create_market`, `place_bet`, `claim_payout` |
+| `POST /api/commands/confidential-market` | `x-api-key: INTERNAL_API_KEY` | Confidential bet API: encrypts bet via FHE mock (pre-alpha) then submits to `confidential_market` program. Actions: `place_bet` |
 | `POST /api/commands/solana-resolve` | `INTERNAL_API_KEY` env var required | Oracle automation: calls Nitro enclave → `commit_vote` → `reveal_vote` → `resolve_market` → `settle_reputation`. Has `skipOnChain=true` mode for offline demos. |
 
 ## On-chain Program
@@ -117,7 +134,7 @@ Program ID (devnet): `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx`
 | Program | Devnet ID | Notes |
 |---|---|---|
 | `smith_oracle` (Anchor `dive_oracle`) | `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx` | IDL at `target/idl/smith_oracle.json` |
-| `confidential_market` | `BB17yKcbp9qNyokaNPo29gjFK9aYBEH69wpQgiRPZhwz` | FHE, separate workspace, not integrated |
+| `confidential_market` | `BB17yKcbp9qNyokaNPo29gjFK9aYBEH69wpQgiRPZhwz` | FHE-enabled betting. Confidential bet flow: client → API route → gRPC → program. Pre-alpha, encryption mocked. |
 
 ## Environment Variables
 

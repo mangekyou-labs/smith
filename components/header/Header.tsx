@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { SolanaConnectWallet } from '../solana/SolanaConnectWallet';
 
 export default function Header() {
     return (
@@ -18,21 +19,19 @@ export default function Header() {
                     <Link href="/market" className="font-[500] text-[17px] text-[#212529] hover:bg-gray-200/80 px-4 py-2 rounded-xl transition-all tracking-wide">
                         Market
                     </Link>
+                    <Link href="/confidential" className="font-[500] text-[17px] text-indigo-700 hover:bg-indigo-50 px-4 py-2 rounded-xl transition-all tracking-wide">
+                        FHE ✦
+                    </Link>
                 </nav>
 
                 {/* Center: Logo */}
                 <div className="flex items-center justify-center">
-                    <span className="font-[700] text-[22px] tracking-[0.15em] text-[#212529]">DIVE</span>
+                    <span className="font-[700] text-[22px] tracking-[0.15em] text-[#212529]">SMITH</span>
                 </div>
 
                 {/* Right: CTA */}
                 <div className="flex items-center justify-end">
-                    <button
-                        type="button"
-                        className="bg-slate-700 text-white px-7 py-2.5 rounded-full font-[500] hover:bg-slate-800 transition-colors text-[17px] shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
-                    >
-                        Get Started
-                    </button>
+                    <SolanaConnectWallet appearance="warm" />
                 </div>
             </header>
         </div>

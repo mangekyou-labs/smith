@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Connection } from "@solana/web3.js";
-import { getMarketAccounts } from "@/lib/solana/market-index";
+import { getMarketAccounts, MarketAccount } from "@/lib/solana/market-index";
 
 const SOLANA_RPC_URL =
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL ??
@@ -65,6 +65,55 @@ const DEVNET_FIXTURES = [
   },
 ];
 
+interface AIMarket {
+  id: string;
+  created_at: string;
+  ai_insight: {
+    agent_id: string;
+    confidence_score: number;
+    suggested_categories: string[];
+  };
+  resolution: {
+    question: string;
+    resolution_date: string;
+    resolution_criteria: string;
+  };
+  amm: {
+    current_odds_yes: number;
+  };
+  ux: {
+    status: string;
+  };
+  settlement: {
+    winning_outcome: string | null;
+  };
+}
+
+function toAIMarket(m: MarketAccount): AIMarket {
+  const statusMap: Record<number, string> = { 0: "PROPOSED", 1: "RESOLVED" };
+  const yesNum = parseFloat(m.yesPool || "0");
+  const noNum = parseFloat(m.noPool || "0");
+  const total = yesNum + noNum;
+  const oddsYes = total > 0 ? yesNum / total : 0.5;
+  return {
+    id: m.marketId,
+    created_at: new Date().toISOString(),
+    ai_insight: {
+      agent_id: m.creator.slice(0, 8) + "...",
+      confidence_score: 0.7,
+      suggested_categories: ["cryptocurrency"],
+    },
+    resolution: {
+      question: m.questionUri,
+      resolution_date: "",
+      resolution_criteria: "",
+    },
+    amm: { current_odds_yes: oddsYes },
+    ux: { status: statusMap[m.status] ?? "PROPOSED" },
+    settlement: { winning_outcome: null },
+  };
+}
+
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse
@@ -77,7 +126,7 @@ export default async function handler(
     if (markets.length === 0) {
       return res.json(DEVNET_FIXTURES);
     }
-    return res.json(markets);
+    return res.json(markets.map(toAIMarket));
   } catch {
     return res.status(200).json(DEVNET_FIXTURES);
   }

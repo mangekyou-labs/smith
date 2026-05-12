@@ -280,6 +280,7 @@ export default function Market() {
     const [modalOutcome, setModalOutcome] = useState<1 | 2>(1);
     const [modalMarketId, setModalMarketId] = useState("");
     const [modalQuestion, setModalQuestion] = useState("");
+    const [confidentialMode, setConfidentialMode] = useState(false);
 
     const openYes = (marketId: string, question: string) => {
         setModalOutcome(1);
@@ -326,6 +327,7 @@ export default function Market() {
                 marketIdHex={modalMarketId || "0000000000000000000000000000000000000000000000000000000000000000"}
                 outcome={modalOutcome}
                 marketQuestion={modalQuestion}
+                confidentialMode={confidentialMode}
             />
 
             <main className="w-[96%] max-w-[1800px] mx-auto mt-6 pb-16">
@@ -334,6 +336,21 @@ export default function Market() {
                 <div className="flex items-center justify-between mb-6 px-2">
                     <div className="flex items-center gap-3">
                         <h1 className={typography.sectionHeader}>All markets</h1>
+                        <button
+                            onClick={() => setConfidentialMode(!confidentialMode)}
+                            style={{
+                                padding: "4px 10px",
+                                borderRadius: 6,
+                                border: "1px solid #6366f1",
+                                background: confidentialMode ? "#6366f1" : "transparent",
+                                color: confidentialMode ? "#fff" : "#818cf8",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            {confidentialMode ? "✦ Confidential On" : "Confidential ✦"}
+                        </button>
                         <button
                             onClick={fetchMarkets}
                             disabled={refreshing}
