@@ -6,7 +6,8 @@ import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { Program, AnchorProvider, Wallet, BN } from "@coral-xyz/anchor";
 import { buildClaimPayoutIx, getBetEscrowPda } from "@/lib/solana/tx-builders";
 import { SOLANA_RPC_URL } from "@/lib/solana/useMarkets";
-import idl from "@/target/idl/smith_oracle.json";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const idl = require("./smith_oracle.json");
 
 const PROGRAM_ID =
   process.env.NEXT_PUBLIC_SMITH_ORACLE_PROGRAM_ID ??

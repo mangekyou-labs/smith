@@ -5,7 +5,8 @@ import {
   SystemProgram,
 } from "@solana/web3.js";
 import { Program, BorshCoder } from "@coral-xyz/anchor";
-import idl from "@/target/idl/smith_oracle.json";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const idl = require("./smith_oracle.json");
 
 const PROGRAM_ID =
   process.env.NEXT_PUBLIC_SMITH_ORACLE_PROGRAM_ID ??
