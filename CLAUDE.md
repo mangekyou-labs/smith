@@ -66,7 +66,7 @@ Mock FHE ciphertext format: `[1 byte fhe_type || 16 bytes little-endian value]` 
 
 | File | Purpose |
 |---|---|
-| `lib/solana/market-index.ts` | `getMarketAccounts()` — PDA scanner via `getProgramAccounts` + BorshCoder IDL deserialization. Runtime IDL loading (avoids Vercel build issues with `target/`). |
+| `lib/solana/market-index.ts` | `getMarketAccounts()` — PDA scanner via `getProgramAccounts` + BorshCoder IDL deserialization. IDL loaded via `require("./smith_oracle.json")` — file committed to `lib/solana/` for Vercel compatibility. |
 | `lib/solana/smith-oracle.ts` | PDA seeds (`vaultSeeds`, `betEscrowSeeds`), payout math, `SolanaOutcome` constants |
 | `lib/solana/useMarkets.ts` | React Query hook for market list |
 | `lib/solana/useTransactions.ts` | `usePlaceBet()` (returns `BetTxResult`), `useClaimPayout()` |
@@ -128,8 +128,10 @@ Program ID (devnet): `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx`
 
 | Program | Devnet ID | Notes |
 |---|---|---|
-| `smith_oracle` (Anchor) | `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx` | IDL at `target/idl/smith_oracle.json` |
+| `smith_oracle` (Anchor) | `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx` | IDL at `lib/solana/smith_oracle.json` |
 | `confidential_market` | `BB17yKcbp9qNyokaNPo29gjFK9aYBEH69wpQgiRPZhwz` | FHE-enabled betting. Pre-alpha, encryption mocked. |
+
+> **Note**: Anchor programs (`programs/smith-oracle/`, `programs/confidential-market/`) live in a separate workspace and are built independently.
 
 ## Environment Variables
 
@@ -156,5 +158,6 @@ NITRO_ENCLAVE_ENDPOINT=https://...
 
 - **`DEFAULT_MINT` placeholder** (`components/solana/PlaceBetModal.tsx`) — placeholder SPL token, not real devnet USDC. Set `NEXT_PUBLIC_DEVNET_USDC_MINT` before betting with real tokens.
 - **`encrypt-pre-alpha/` excluded** — separate Rust workspace, `tsconfig.json` exclude pattern. Build separately.
-- **`target/` directory excluded from Vercel** — runtime IDL loading in `lib/solana/market-index.ts` and `lib/reputation.ts` avoids static import failures.
+- **`target/` directory excluded from Vercel** — IDL files committed to `lib/solana/` (`smith_oracle.json`, `confidential_market.json`). All `require()` calls use these committed files, not `target/idl/`.
+- **`pages/api/commands/solana-resolve.ts`** — still uses runtime `fs` check for `process.cwd()` fallback path (non-blocking, works on Vercel).
 - **Single operator wallet** — one key controls all agent actions. Per-agent keypairs needed before mainnet with real TVL.
