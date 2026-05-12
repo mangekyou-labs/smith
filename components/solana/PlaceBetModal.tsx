@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { usePlaceBet } from "@/lib/solana/useTransactions";
+import { usePlaceBet, type BetTxState } from "@/lib/solana/useTransactions";
 import { PublicKey } from "@solana/web3.js";
 
 const SPL_TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
@@ -36,11 +36,15 @@ export function PlaceBetModal({
   marketQuestion = "This market",
 }: PlaceBetModalProps) {
   const { publicKey, connected } = useWallet();
-  const placeBet = usePlaceBet();
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sig, setSig] = useState<string | null>(null);
+  const [txState, setTxState] = useState<BetTxState>("idle");
+  const placeBet = usePlaceBet((sig) => {
+    setSig(sig);
+    setTxState("pending");
+  });
 
   // Reset state when modal opens
   useEffect(() => {
@@ -49,6 +53,7 @@ export function PlaceBetModal({
       setError(null);
       setSig(null);
       setLoading(false);
+      setTxState("idle");
     }
   }, [open]);
 
@@ -72,7 +77,7 @@ export function PlaceBetModal({
       const mint = new PublicKey(mintAddress);
       const bettorTokenAccount = await getAssociatedTokenAddress(mint, publicKey);
 
-      const signature = await placeBet.mutateAsync({
+      const result = await placeBet.mutateAsync({
         marketIdHex,
         outcome,
         amount: parsed,
@@ -80,8 +85,11 @@ export function PlaceBetModal({
         mint,
       });
 
-      setSig(signature);
+      setSig(result.signature);
+      setTxState(result.state);
+      if (result.error) setError(result.error);
     } catch (e: unknown) {
+      setTxState("error");
       setError(e instanceof Error ? e.message : "Transaction failed");
     } finally {
       setLoading(false);
@@ -166,6 +174,7 @@ export function PlaceBetModal({
               outline: "none",
             }}
           />
+          <p style={{ color: "#555", fontSize: 11, marginTop: 6 }}>Estimated fee: ~0.0005 SOL</p>
         </div>
 
         {/* Error */}
@@ -175,10 +184,32 @@ export function PlaceBetModal({
           </div>
         )}
 
-        {/* Success */}
+        {/* Transaction state feedback */}
         {sig && (
-          <div style={{ color: "#86efac", fontSize: 13, marginBottom: 12, wordBreak: "break-all" }}>
-            Done! Tx: {sig.slice(0, 12)}...
+          <div style={{ marginBottom: 12 }}>
+            {txState === "pending" && (
+              <div style={{ color: "#facc15", fontSize: 13 }}>
+                Submitted... waiting for confirmation
+              </div>
+            )}
+            {txState === "confirmed" && (
+              <div style={{ color: "#86efac", fontSize: 13 }}>
+                Confirmed!{" "}
+                <a
+                  href={`https://explorer.solana.com/tx/${sig}?cluster=devnet`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#6ee7b7", textDecoration: "underline" }}
+                >
+                  View on Explorer
+                </a>
+              </div>
+            )}
+            {txState === "error" && (
+              <div style={{ color: "#f87171", fontSize: 13 }}>
+                Failed: {error}
+              </div>
+            )}
           </div>
         )}
 
