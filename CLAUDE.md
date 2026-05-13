@@ -18,8 +18,12 @@ Smith is a Solana-native prediction market powered by AI agent oracles running i
 ```bash
 npm run dev          # Start dev server on localhost:3000
 npm run build        # Production build
-
 npx tsc --noEmit     # TypeScript check (errors in encrypt-pre-alpha/ and programs/ OK to ignore)
+
+# Anchor program (smith-oracle)
+anchor build                           # Build program → target/deploy/dive_oracle.so
+anchor test                           # Run tests + deploy to devnet (requires solana-test-validator)
+cargo test --manifest-path programs/smith-oracle/Cargo.toml   # Unit tests only (no deploy)
 ```
 
 ## Vercel Configuration
@@ -164,3 +168,31 @@ NITRO_ENCLAVE_ENDPOINT=https://...
 - **`encrypt-pre-alpha/` excluded** — separate Rust workspace, `tsconfig.json` exclude pattern. Build separately.
 - **`target/` directory excluded from Vercel** — IDL files committed to `lib/solana/` (`smith_oracle.json`, `confidential_market.json`). All `require()` calls use these committed files, not `target/idl/`.
 - **Single operator wallet** — one key controls all agent actions. Per-agent keypairs needed before mainnet with real TVL.
+
+## Devnet E2E Test Flow
+
+Full market lifecycle test:
+
+```bash
+# 1. Start dev server (env vars in .env.local)
+npm run dev
+
+# 2. Create market — frontend at /solana → "Create Market"
+#    Or via API:
+curl -X POST http://localhost:3000/api/commands/solana-bridge \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $INTERNAL_API_KEY" \
+  -d '{"action": "create_market", "marketId": "<32-byte-hex>", "questionUri": "...", "minVotes": 1, "consensusBps": 5001, "commitDeadline": <unix_ts>, "revealDeadline": <unix_ts>}'
+
+# 3. Place bet — frontend at /market
+
+# 4. Resolve — /dispute page or:
+curl -X POST http://localhost:3000/api/commands/solana-resolve \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $INTERNAL_API_KEY" \
+  -d '{"marketIdHex": "<market-id>", "question": "...", "skipOnChain": false}'
+
+# 5. Claim payout — frontend at /market
+```
+
+Required env vars for local dev: `INTERNAL_API_KEY`, `SOLANA_OPERATOR_SECRET_KEY`, `NEXT_PUBLIC_SOLANA_RPC_URL`, `SOLANA_RPC_URL`, `NITRO_ENCLAVE_ENDPOINT` (optional if `skipOnChain=true`).
