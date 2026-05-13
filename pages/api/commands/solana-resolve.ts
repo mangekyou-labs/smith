@@ -45,11 +45,6 @@ import {
 import { Program, AnchorProvider, Wallet } from "@coral-xyz/anchor";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import {
-  existsSync,
-  readFileSync,
-} from "fs";
-import { join } from "path";
-import {
   extractVote,
   selectCommittee,
   updateReputation,
@@ -65,19 +60,9 @@ import {
 } from "@/lib/solana/smith-oracle";
 import { callNitroAgent } from "@/lib/nitro";
 
-// Runtime IDL loader — avoids static import of target/idl/ (gitignored, not on Vercel)
-function loadIdl(): unknown {
-  const paths = [
-    join(process.cwd(), "target/idl/smith_oracle.json"),
-    join(process.cwd(), "lib/solana/smith_oracle.json"),
-  ];
-  for (const p of paths) {
-    if (existsSync(p)) return JSON.parse(readFileSync(p, "utf-8"));
-  }
-  return null;
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const idl = loadIdl() as any;
+// Static IDL — committed to lib/solana/ for Vercel compatibility
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const idl = require("@/lib/solana/smith_oracle.json");
 
 // ─── Solana setup ─────────────────────────────────────────────────────────────
 
