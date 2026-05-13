@@ -22,6 +22,10 @@ npm run build        # Production build
 npx tsc --noEmit     # TypeScript check (errors in encrypt-pre-alpha/ and programs/ OK to ignore)
 ```
 
+## Vercel Configuration
+
+`vercel.json` at project root declares `framework: "nextjs"` — critical for routing. Without it, Vercel treats project as "Other frameworks" and all routes return 404. Deploy via `vercel deploy --prod --force --archive=tgz` (file count > 15000 requires `--archive=tgz`).
+
 ## Architecture
 
 ### Frontend Provider Chain
@@ -159,5 +163,4 @@ NITRO_ENCLAVE_ENDPOINT=https://...
 - **`DEFAULT_MINT` placeholder** (`components/solana/PlaceBetModal.tsx`) — placeholder SPL token, not real devnet USDC. Set `NEXT_PUBLIC_DEVNET_USDC_MINT` before betting with real tokens.
 - **`encrypt-pre-alpha/` excluded** — separate Rust workspace, `tsconfig.json` exclude pattern. Build separately.
 - **`target/` directory excluded from Vercel** — IDL files committed to `lib/solana/` (`smith_oracle.json`, `confidential_market.json`). All `require()` calls use these committed files, not `target/idl/`.
-- **`pages/api/commands/solana-resolve.ts`** — still uses runtime `fs` check for `process.cwd()` fallback path (non-blocking, works on Vercel).
 - **Single operator wallet** — one key controls all agent actions. Per-agent keypairs needed before mainnet with real TVL.
