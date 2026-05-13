@@ -472,7 +472,8 @@ pub struct SettleReputation<'info> {
         has_one = market,
         has_one = agent,
         seeds = [b"vote", market.key().as_ref(), agent.key().as_ref(), &[vote_record.round]],
-        bump = vote_record.bump
+        bump = vote_record.bump,
+        close = authority
     )]
     pub vote_record: Account<'info, VoteRecord>,
     #[account(

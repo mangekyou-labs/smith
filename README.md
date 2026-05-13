@@ -26,7 +26,7 @@ After the resolution date, the oracle committee runs:
 
 **Step 1 — Committee selection.** The operator selects `min_votes` agents weighted by reputation score. Higher reputation = higher chance of being selected.
 
-**Step 2 — TEE inference.** Each agent calls the 0G ServingBroker for TEE-attested inference on the question. Agents receive an LLM verdict + supporting evidence.
+**Step 2 — TEE inference.** Each agent calls the AWS Nitro Enclave endpoint for TEE-attested inference. The enclave runs Gemini inside the Nitro VM and returns a verdict + evidence + attestation document (PCR0/PCR1 measurements).
 
 **Step 3 — Commit.** Each agent computes `commit_hash = sha256([outcome_u8] || salt_32_bytes)` and submits the hash on-chain via `commit_vote`. The actual vote is hidden at this stage. Agents use `human_id_hash` as identity proof to prevent double-voting.
 
@@ -46,7 +46,7 @@ If your side wins, you call `claim_payout` to withdraw your proportional share f
 
 ```
 User → Solana Program (market accounts, vault escrow)
-     → 0G ServingBroker (TEE inference for agent committee)
+     → AWS Nitro Enclave (TEE-attested Gemini inference)
      → AI agents vote commit/reveal on-chain
      → Resolution + payout
 ```
@@ -70,7 +70,7 @@ If `resolve_market` finds insufficient votes or no consensus threshold met, the 
 ### Tech stack
 
 - **Solana Devnet** — Anchor program for market accounts, voting, escrow
-- **0G Compute / Galileo** — TEE-attested LLM inference via `@0glabs/0g-serving-broker`
+- **AWS Nitro Enclaves** — TEE environment for production LLM inference (Gemini inside Nitro VM)
 - **Next.js** (Pages Router) — Frontend, wallet adapter, on-chain reads
 - **CoinGecko** — Price feeds for USD display
 
@@ -92,7 +92,108 @@ SOLANA_OPERATOR_SECRET_KEY=[...]
 INTERNAL_API_KEY=[...]
 NEXT_PUBLIC_SMITH_ORACLE_PROGRAM_ID=CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx
 NEXT_PUBLIC_SOLANA_CLUSTER=devnet
+
+# AWS Nitro Enclave — TEE inference endpoint (production)
+NITRO_ENCLAVE_ENDPOINT=https://your-enclave-endpoint.amazonaws.com/infer
 ```
+
+---
+
+## AWS Nitro Enclave — Agent Inference
+
+Smith agents run LLM inference inside **AWS Nitro Enclaves** — hardware-isolated VM compartments where the enclave memory is encrypted with a per-enclave key inaccessible to the host. This provides **trusted execution environment (TEE)** attestation: clients can verify the enclave identity (PCR0/PCR1 measurements) before trusting the inference result.
+
+### Architecture
+
+```
+API route (solana-resolve.ts)
+    └─ callNitroAgent(prompt)          [lib/nitro.ts]
+            └─ HTTP POST to Nitro endpoint
+                    └─ Gemini runs inside Nitro VM
+                            └─ { response, attestation_document, hash }
+```
+
+### Nitro response shape
+
+```typescript
+interface NitroAttestation {
+  response: string;          // LLM verdict text, ends with "My vote: YES" or "My vote: NO"
+  attestation_document: string; // base64 CBOR — contains PCR0/PCR1 + certificate chain
+  hash: string;              // sha256 of response text
+}
+```
+
+### Vote extraction
+
+`extractVote(text)` parses `"My vote: YES"` or `"My vote: NO"` from the response using a regex. Response must end with this line.
+
+### Attestation verification (future)
+
+The `smith_oracle` program has a `verify_attestation` instruction that checks the Nitro attestation document (PCR0/PCR1 measurements) on-chain. Currently verification is off-chain; on-chain verification is planned.
+
+### One-click AWS setup
+
+Agents wait for 1-click AWS setup + Gemini API key from the owner. The Nitro enclave image (EIF) must be built and deployed to EKS or EC2 with Nitro Enclaves enabled before `NITRO_ENCLAVE_ENDPOINT` is functional.
+
+### Adding new agents
+
+Agents are identified by their `human_id_hash` — a 32-byte hash derived from their iNFT tokenId. The committee is selected by reputation-weighted random draw from all registered agents.
+
+```typescript
+// lib/reputation.ts
+interface AgentEntry {
+  displayName: string;
+  inftTokenId: number | null;   // iNFT token ID on Solana
+  reputation: number;            // starting score: 10
+  humanId: string | null;       // 32-byte hex hash (used for HumanVoteMarker PDA)
+  domainTags: string;            // e.g. "ai,research,politics"
+}
+```
+
+Committee selection (reputation-weighted top-k):
+
+```typescript
+selectCommittee(agents: AgentEntry[], size: number): AgentEntry[]
+// Sorts by reputation descending, returns top `size` agents
+```
+
+Current mock committee (hardcoded in `solana-resolve.ts`):
+
+```typescript
+const allAgents: AgentEntry[] = [
+  { displayName: "AlphaOracle", inftTokenId: 2, reputation: 10, humanId: "0xabc", domainTags: "ai,research" },
+  { displayName: "BetaAnalyst",  inftTokenId: 3, reputation: 10, humanId: "0xdef", domainTags: "ai,research" },
+  { displayName: "GammaOracle",  inftTokenId: 4, reputation: 10, humanId: "0xghi", domainTags: "ai,research" },
+  // ...
+];
+```
+
+Replace this with a real on-chain agent registry scan via `getProgramAccounts` for production.
+
+### Contrarian role
+
+`solana-resolve.ts` assigns a **contrarian reviewer** role to every odd-indexed agent in the committee. This is a deliberate design: half the agents vote YES-proponent, half vote NO-proponent. The role is baked into the prompt sent to Nitro:
+
+```
+"You are a CONTRARIAN REVIEWER. Find every reason this should resolve NO."
+"You are a PROPONENT REVIEWER. Find every reason this should resolve YES."
+```
+
+This forces evidence gathering from both sides before consensus is formed.
+
+### Reputation system
+
+| Event | Score delta |
+|-------|-------------|
+| Correct vote | +10 |
+| Wrong vote | −5 (floor 0) |
+| Starting score | 10 |
+
+Reputation is stored on-chain in the `Reputation` PDA (`["reputation", agent_pubkey]`).
+
+---
+
+## API
 
 ---
 
@@ -102,8 +203,9 @@ NEXT_PUBLIC_SOLANA_CLUSTER=devnet
 
 | Route | Action |
 |---|---|
-| `POST /api/commands/solana-bridge` | register_agent, create_market, resolve, commit, reveal |
+| `POST /api/commands/solana-bridge` | register_agent, create_market, place_bet, claim_payout, commit, reveal, resolve, settle |
 | `POST /api/commands/solana-resolve` | Run full oracle committee, commit/reveal, settle |
+| `POST /api/commands/confidential-market` | FHE-encrypted betting (pre-alpha) |
 
 ### Market data
 
@@ -116,21 +218,35 @@ NEXT_PUBLIC_SOLANA_CLUSTER=devnet
 ## File map
 
 ```
+lib/
+  nitro.ts               # AWS Nitro Enclave client + extractVote
+  reputation.ts          # selectCommittee, extractVote, updateReputation
+
 lib/solana/
-  smith-oracle.ts     # Program constants, PDA derivations, vote helpers
-  tx-builders.ts      # Raw instruction builders (place_bet, claim_payout)
-  market-index.ts     # getProgramAccounts scanner + cache
-  price-utils.ts      # formatTokenAmount, formatUSD, CoinGecko fetch
+  smith-oracle.ts        # PDA seeds, payout math, SolanaOutcome constants
+  market-index.ts        # getMarketAccounts() PDA scanner + BorshCoder deserialization
+  tx-builders.ts         # Raw instruction builders (claim_payout IX)
+  useMarkets.ts          # React Query hook for market list (30s cache)
+  useTransactions.ts     # usePlaceBet(), useClaimPayout() mutations
+  useBet.ts              # useBet hook
+  encrypt-grpc.ts        # FHE mock helpers (pre-alpha confidential betting)
+  price-utils.ts         # formatTokenAmount, formatUSD, CoinGecko fetch
 
 pages/
-  index.tsx           # Landing + market browser
-  markets.tsx         # Full market list
-  portfolio.tsx       # User positions
+  index.tsx              # Landing + market browser
+  home.tsx               # Home / dashboard
+  market.tsx             # Single market view + place bet modal
+  agents.tsx             # Agent registry + reputation
+  dispute.tsx            # DisputeResolution component (calls solana-resolve skipOnChain)
+  dash.tsx               # Portfolio / positions
   api/
     commands/
-      solana-bridge.ts   # Operator write API
-      solana-resolve.ts  # Oracle automation
-    markets.ts           # Market list endpoint
+      solana-bridge.ts       # Operator write API (register, create, bet, claim)
+      solana-resolve.ts      # Oracle automation (committee → commit → reveal → resolve)
+      confidential-market.ts # FHE betting API (pre-alpha)
+      generate-insights.ts   # AI insight generation
+      session/[id].ts       # Session management
+    markets.ts               # Market list endpoint (GET)
 ```
 
 ---
@@ -139,11 +255,7 @@ pages/
 
 Smith oracle program on devnet: `CX8CseQebFhKUyKH1SnddtXxCaxZBesHMdDYr1UPEdZx`
 
-Market discriminator: `[222, 62, 67, 220, 63, 166, 126, 33]`
-
-Bet discriminator: `[222, 62, 67, 220, 63, 166, 126, 33]`
-
-Claim payout discriminator: `[127, 240, 132, 62, 227, 198, 146, 133]`
+> **Note:** Anchor program IDL (committed to `lib/solana/smith_oracle.json`) is the authoritative source for instruction discriminators. Do not rely on hardcoded bytes in this README — generate them from the IDL.
 
 ---
 
